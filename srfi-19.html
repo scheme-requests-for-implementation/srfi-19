@@ -4,7 +4,7 @@
     <title>SRFI 19: Time Data Types and Procedures</title>
     <meta name="keywords" content="Scheme, programming language, time
     processing, date processing, Julian Day, SRFI, overdone temporal smut">
-    <link rev=made href="mailto:fitzgerald@neodesic.com">
+    <link rev=made href="mailto:will.fitzgerald@pobox.com">
  <!-- This style sheet is from the SRFI-1 description (Olin Shivers), but modified to taste.
       -->
     <style type="text/css">
@@ -128,7 +128,7 @@ Time Data Types and Procedures
 
 <H1>Author</H1>
 
-Will Fitzgerald, Neodesic Corporation
+Will Fitzgerald
 
 <H1>Status</H1>
 
@@ -143,6 +143,7 @@ the archive of the mailing list</a>.
 <LI>Draft: 2000/02/28-2000/08/28 </LI>
 <LI>Final: 2000/08/31</LI>
 <LI>Fixed reference implementation: 2003/02/28</LI>
+<LI>Documentation bug for <code>~D</code> fixed: 2003/05/30</LI>
 </UL>
 
 <H1>Abstract</H1>
@@ -471,7 +472,7 @@ converters; implementations are free to extend this list.
 <TR><TD width="5%"><code>~B</code></TD><TD WIDTH="95%">locale's full month day (January...December)</TD></TR>
 <TR><TD width="5%"><code>~c</code></TD><TD WIDTH="95%">locale's date and time (e.g., "Fri Jul 14 20:28:42-0400 2000") </TD></TR>
 <TR><TD width="5%"><code>~d</code></TD><TD WIDTH="95%">day of month, zero padded (01...31)</TD></TR>
-<TR><TD width="5%"><code>~D</code></TD><TD WIDTH="95%">date (dd/mm/yy)</TD></TR>
+<TR><TD width="5%"><code>~D</code></TD><TD WIDTH="95%">date (mm/dd/yy)</TD></TR>
 <TR><TD width="5%"><code>~e</code></TD><TD WIDTH="95%">day of month, blank padded ( 1...31)</TD></TR>
 <TR><TD width="5%"><code>~f</code></TD><TD WIDTH="95%">seconds+fractional seconds, using locale's decimal separator (e.g. 5.2).</TD></TR>
 <TR><TD width="5%"><code>~h</code></TD><TD WIDTH="95%">same as ~b</TD></TR>
@@ -621,9 +622,6 @@ Krishnamurthi for his editing help.
 GNU C's <code>date</code> procedure, as well as <code>scsh</code>'s
 <code>FORMAT-DATE</code> procedure. 
 
-<p>More acknowledgements are made on my <a
-href="http://www.neodesiclabs.com/will/portals/time.html">Representing
-Time</a> web page.
 
 <H1>Copyright</H1>
 
@@ -653,5 +651,5 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 Krishnamurthi</A></ADDRESS>
 Last 
 modified by the author:<BR><CODE>(display (date->string (current-date 0)
-"~4"))</CODE>: 2000-07-15T01:32:43Z
+"~4"))</CODE>: 2003-05-30T12:34:56Z
 </BODY></HTML>
