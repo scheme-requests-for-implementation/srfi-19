@@ -27,7 +27,7 @@
 
 	   /* This stuff is for definition lists of defined procedures.
            ** A proc-def2 is used when you want a stack of procs to go
-	   ** with one <dd> ... </dd> body. In this case, make the first
+	   ** with one <dd> ... < / dd> body. In this case, make the first
 	   ** proc a proc-def1, following ones proc-defi's, and the last one
            ** a proc-defn.
            **
@@ -90,7 +90,7 @@
            a.draft { color: red; }
     </style>
 
-    <style type="text/css"; media=all>
+    <style type="text/css" media=all>
 	   /* Nastiness: Here, I'm using a bug to work around a bug.
 	   ** Netscape rendering bugs mean you need bogus <dt> and <dd>
 	   ** margin settings -- settings which screw up IE's proper rendering.
@@ -132,18 +132,20 @@ Will Fitzgerald
 
 <H1>Status</H1>
 
-This SRFI is currently in ``final'' status. To see an explanation of
+<p>This SRFI is currently in ``final'' status. To see an explanation of
 each status that a SRFI can hold, see <a
 href="http://srfi.schemers.org/srfi-process.html">here</a>.  You can
 access the discussion via <a
 href="http://srfi.schemers.org/srfi-19/mail-archive/maillist.html">
 the archive of the mailing list</a>.
-<P>
+
+
 <UL>
-<LI>Draft: 2000/02/28-2000/08/28 </LI>
-<LI>Final: 2000/08/31</LI>
-<LI>Fixed reference implementation: 2003/02/28</LI>
-<LI>Documentation bug for <code>~D</code> fixed: 2003/05/30</LI>
+<LI>Draft: 2000-02-28 to 2000-08-28 </LI>
+<LI>Final: 2000-08-31</LI>
+<LI>Fixed reference implementation: 2003-02-28</LI>
+<LI>Documentation bug for <code>~D</code> fixed: 2003-05-30</LI>
+<LI>Various Documentation bugs fixed: 2004-03-15</LI>
 </UL>
 
 <H1>Abstract</H1>
@@ -310,14 +312,14 @@ described in parentheses.
 <DL>
   <DT class=proc-def><CODE class=proc-def>time&lt;=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> is before or at (less than or equal to) <var>time2</var>, <code>#f</code> otherwise. 
-  <DT class=proc-def><CODE class=proc-def>time&lt;?</CODE> <VAR>time1 time2</VAR> -> <VAR></VAR>
+  <DT class=proc-def><CODE class=proc-def>time&lt;?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> is before (less than) <var>time2</var>, <code>#f</code> otherwise. 
   <DT class=proc-def><CODE class=proc-def>time=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
-  <DD class=proc-def>#t</code> if <var>time1</var> at (equal) <var>time2</var>, <code>#f</code> otherwise. 
+  <DD class=proc-def><code>#t</code> if <var>time1</var> at (equal) <var>time2</var>, <code>#f</code> otherwise. 
   <DT class=proc-def><CODE class=proc-def>time&gt;=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
-  <DD class=proc-def>#t</code> if <var>time1</var> is at or after (greater than or equal to) <var>time2</var>, <code>#f</code> otherwise. 
+  <DD class=proc-def><code>#t</code> if <var>time1</var> is at or after (greater than or equal to) <var>time2</var>, <code>#f</code> otherwise. 
   <DT class=proc-def><CODE class=proc-def>time&gt;?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
-  <DD class=proc-def>#t</code> if <var>time1</var> is after (greater than) <var>time2</var>, <code>#f</code> otherwise. 
+  <DD class=proc-def><code>#t</code> if <var>time1</var> is after (greater than) <var>time2</var>, <code>#f</code> otherwise. 
 </DL>
 
 <h2>Time arithmetic procedures</h2>
@@ -393,7 +395,7 @@ The following conversion procedures are required.
   <DD class=proc-def>Convert Julian Day to TAI time.
   <DT class=proc-def><CODE class=proc-def>julian-day->time-utc</CODE> <VAR>jd</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert Julian Day to UTC time.
-  <DT class=proc-def><CODE class=proc-def>modified-julian-day->date</CODE> <VAR>mjd</VAR> ->  [<VAR>tz-offset</VAR>] <VAR>date</VAR>
+  <DT class=proc-def><CODE class=proc-def>modified-julian-day->date</CODE> <VAR>mjd</VAR> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
   <DD class=proc-def>Convert Modified Julian Day to date, using time zone offset, which defaults to the local time zone.
   <DT class=proc-def><CODE class=proc-def>modified-julian-day->time-monotonic</CODE> <VAR>mjd</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert Modified Julian Day to monotonic time.
@@ -415,7 +417,7 @@ The following conversion procedures are required.
   <DD class=proc-def>Convert monotonic time to UTC time.
   <DT class=proc-def><CODE class=proc-def>time-monotonic->time-utc!</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert monotonic time to UTC time.  The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-tai->date</CODE> <VAR>time-tai . tz-offset</VAR> -> <VAR>date</VAR>
+  <DT class=proc-def><CODE class=proc-def>time-tai->date</CODE> <VAR>time-tai [tz-offset]</VAR> -> <VAR>date</VAR>
   <DD class=proc-def>Convert TAI time to date, using time zone offset, which defaults to the local time zone.
   <DT class=proc-def><CODE class=proc-def>time-tai->julian-day</CODE> <VAR>time-tai</VAR> -> <VAR>jd</VAR>
   <DD class=proc-def>Convert TAI time to Julian Day.
@@ -429,7 +431,7 @@ The following conversion procedures are required.
   <DD class=proc-def>Convert TAI time to monotonic time.
   <DT class=proc-def><CODE class=proc-def>time-tai->time-utc!</CODE> <VAR>time-tai</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert TAI time to monotonic time. The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-utc->date</CODE> <VAR>time-utc . tz-offset</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def><CODE class=proc-def>time-utc->date</CODE> <VAR>time-utc [tz-offset]</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert UTC time to date, using time zone offset, which defaults to the local time zone.
   <DT class=proc-def><CODE class=proc-def>time-utc->julian-day</CODE> <VAR>time-utc</VAR> -> <VAR>jd</VAR>
   <DD class=proc-def>Convert UTC time to Julian Day
@@ -439,10 +441,10 @@ The following conversion procedures are required.
   <DD class=proc-def>Convert UTC time to monotonic time.
   <DT class=proc-def><CODE class=proc-def>time-utc->time-monotonic!</CODE> <VAR>time-utc</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert UTC time to monotonic time. The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-utc->time-tai</CODE> <VAR>time-utc</VAR> -> <VAR>time-utc</VAR>
-  <DD class=proc-def>Convert UTC time to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>time-utc->time-tai!</CODE> <VAR>time-utc</VAR> -> <VAR>time-utc</VAR>
-  <DD class=proc-def>Convert UTC time to monotonic time. The time structure may be reused.
+  <DT class=proc-def><CODE class=proc-def>time-utc->time-tai</CODE> <VAR>time-utc</VAR> -> <VAR>time-tai</VAR>
+  <DD class=proc-def>Convert UTC time to TAI time.
+  <DT class=proc-def><CODE class=proc-def>time-utc->time-tai!</CODE> <VAR>time-utc</VAR> -> <VAR>time-tai</VAR>
+  <DD class=proc-def>Convert UTC time to TAI time. The time structure may be reused.
 </DL>
 
 <h2>Date to String/String to Date Converters</h2>
@@ -457,11 +459,11 @@ escape characters (indicated by the tilde) are replaced with specfic conversions
 implementations are free to extend this list.
   <DT class=proc-def><CODE class=proc-def>string->date</CODE> <VAR>input-string template-string</VAR> -> <VAR>date</VAR>
   <DD class=proc-def>Converts an input string to a date, using the template string. The input string must match the template
-sting as is; except escape charaters (indicate by the tilde) indicate special converters which (1) move to the next character in the input string fulfilling a criterion; (2) read a value, and (3) act on this value in some way. Table 2 lists the required 
+sting as is; except escape characters (indicate by the tilde) indicate special converters which (1) move to the next character in the input string fulfilling a criterion; (2) read a value, and (3) act on this value in some way. Table 2 lists the required 
 converters; implementations are free to extend this list.
 </DL>
 
-<TABLE ALIGN="CENTER" WIDTH="80%">
+<TABLE ALIGN="CENTER" WIDTH="80%" summary="DATE->STRING conversion specifiers">
 <TR><TD COLSPAN="2"><HR WIDTH="100%"></TD></TR>
 <TR><TH>Ch</TH><TH>Conversion</TH></TR>
 <TR><TD COLSPAN="2"><HR WIDTH="100%"></TD></TR>
@@ -511,8 +513,7 @@ converters; implementations are free to extend this list.
 <TR><TD COLSPAN="2"><HR WIDTH="100%"></TD></TR>
 </TABLE>
 
-<p>
-<TABLE ALIGN="CENTER" WIDTH="80%">
+<TABLE ALIGN="CENTER" WIDTH="80%" summary="STRING->DATE conversion specifiers">
 <TR><TD COLSPAN="4"><HR WIDTH="100%"></TD></TR>
 <TR><TH>Ch</TH><TH>Skip to</TH><TH>Read</TH><TH>Set</TH></TR>
 <TR><TD COLSPAN="4"><HR WIDTH="100%"></TD></TR>
@@ -559,7 +560,6 @@ href="http://srfi.schemers.org/srfi-8/">SRFI 8 RECEIVE: Binding to
 multiple values</a>.  which is easy to implement with the following
 syntax:
 
-<CODE>
 <PRE>
 (define-syntax receive
   (syntax-rules ()
@@ -567,7 +567,6 @@ syntax:
      (call-with-values (lambda () expression)
                        (lambda formals body ...)))))
 </PRE>
-</CODE>
 
 <p>Note that it contains TAI-UTC.DAT reader.
 
@@ -651,5 +650,5 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 Krishnamurthi</A></ADDRESS>
 Last 
 modified by the author:<BR><CODE>(display (date->string (current-date 0)
-"~4"))</CODE>: 2003-05-30T12:34:56Z
+"~4"))</CODE>: 2004-03-15T02:21:15Z
 </BODY></HTML>
