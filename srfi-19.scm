@@ -212,7 +212,7 @@
 
 (define (time-day-seconds time)
   (tm:day-seconds (time-second time) 
-		  (time-minute-time)
+		  (time-minute time)
 		  (time-hour time)))
 		  
 ;(define  time-zone-offset date-time-zone-offset); => integer
