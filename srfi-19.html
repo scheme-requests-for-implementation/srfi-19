@@ -142,6 +142,7 @@ the archive of the mailing list</a>.
 <UL>
 <LI>Draft: 2000/02/28-2000/08/28 </LI>
 <LI>Final: 2000/08/31</LI>
+<LI>Fixed reference implementation: 2003/02/28</LI>
 </UL>
 
 <H1>Abstract</H1>
@@ -569,8 +570,8 @@ syntax:
 
 <p>Note that it contains TAI-UTC.DAT reader.
 
-<P>The <a href="./implementation.txt">accompanying 
-implementation</a> is written in MzScheme. MzScheme provides the procedure 
+<P>The <a href="srfi-19.scm">accompanying 
+implementation</a> is written in MzScheme.  MzScheme provides the procedure 
 <CODE>current-seconds</CODE>, which returns the number of seconds (UTC)
 since 1970-01-01T00:00:00Z+00:00, and
 <code>current-milliseconds</code>, which is a monotonic time
@@ -597,6 +598,8 @@ Types, could be used instead.
 it might be good to use that code instead.
 
 <p>From this, the rest of the implementation was built. 
+
+<p>There is also a <a href="srfi-19-test-suite.scm">test suite</a>.
 
 <h1>Acknowledgements</h1>
 
