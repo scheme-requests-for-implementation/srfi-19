@@ -75,6 +75,9 @@
 ;;
 ;; changed arity-3 calls to / and - to arity 2 calls (again,
 ;; for more general portability). 
+;;
+;; split-real fixed again -- by removing it, and using
+;; 'fractional part'. Will Fitzgerald 5/16/2003.
 ;; --------------------------------------------------------------
 
 (define-syntax receive
@@ -619,16 +622,13 @@
    (else
     (tm:char-pos char str (+ index 1) len))))
   
-(define (tm:split-real r)
-  (if (integer? r)
-      (values r 0)
+
+(define (tm:fractional-part r)
+  (if (integer? r) "0"
       (let ((str (number->string (exact->inexact r))))
 	(let ((ppos (tm:char-pos #\. str 0 (string-length str))))
-	  (if ppos
-	      (values
-	       (string->number (substring str 0 ppos))
-	       (string->number (substring str  (+ ppos 1) (string-length str))))
-	      (values r 0))))))
+	  (substring str  (+ ppos 1) (string-length str))))))
+
 
 ;; gives the seconds/date/month/year 
 (define (tm:decode-julian-day-number jdn)
@@ -1022,16 +1022,14 @@
 		   (display (tm:padding (date-second date)
 					pad-with 2)
 			    port))
-	       (receive (i f) 
-			(tm:split-real (/ 
-					(date-nanosecond date)
-					tm:nano 1.0))
-			(let* ((ns (number->string f))
-			       (le (string-length ns)))
-			  (if (> le 2)
-			      (begin
-				(display tm:locale-number-separator port)
-				(display (substring ns 2 le) port)))))))
+	       (let* ((ns (tm:fractional-part (/ 
+					       (date-nanosecond date)
+					       tm:nano 1.0)))
+		      (le (string-length ns)))
+		 (if (> le 2)
+		     (begin
+		       (display tm:locale-number-separator port)
+		       (display (substring ns 2 le) port))))))
    (cons #\h (lambda (date pad-with port)
 	       (display (date->string date "~b") port)))
    (cons #\H (lambda (date pad-with port)
