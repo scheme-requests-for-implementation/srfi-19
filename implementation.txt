@@ -288,12 +288,17 @@
 (defining "TIME comparisons")
 ;; -- Time comparisons
 
+;; FIXED by: Shiro Kawai <shiro@lava.net>
+;; (the original procedure didn't work if proc was one of <, <=, > or >=)
 (define (tm:time-compare time1 time2 proc caller)
   (if (or (not (and (time? time1) (time? time2)))
 	  (not (eq? (time-type time1) (time-type time2))))
       (tm:time-error caller 'incompatible-time-types #f)
-      (and (proc (time-second time1) (time-second time2))
-	   (proc (time-nanosecond time1) (time-nanosecond time2)))))
+      (cond ((= (time-second time1) (time-second time2))
+             (proc (time-nanosecond time1) (time-nanosecond time2)))
+            ((and (not (eq? proc =))
+                  (proc (time-second time1) (time-second time2))))
+            (else #f))))
 
 (define (time=? time1 time2)
   (tm:time-compare time1 time2 = 'time=?))
@@ -435,7 +440,8 @@
   (if (not (eq? (time-type time-in) time-monotonic))
       (tm:time-error caller 'incompatible-time-types time-in))
   (set-time-type! time-in time-tai)
-  (tm:time-tai->time-utc! ntime ntime 'time-monotonic->time-utc))
+  ;; Post final-SRFI fix: ntime -> time-in
+  (tm:time-tai->time-utc! time-in time-in 'time-monotonic->time-utc))
 
 (define (time-monotonic->time-tai time-in)
   (if (not (eq? (time-type time-in) time-monotonic))
@@ -681,14 +687,27 @@
 (define (leap-year? date)
   (tm:leap-year? (date-year date)))
 
-(define  tm:month-assoc '((1 . 31)  (2 . 59)   (3 . 90)   (4 . 120) 
-			  (5 . 151) (6 . 181)  (7 . 212)  (8 . 243)
-			  (9 . 273) (10 . 304) (11 . 334) (12 . 365)))
+;; FIXED by: Shiro Kawai <shiro@lava.net>
+;; For calculation of date-year-day, the reference implementation
+;; searches the table:
+;; (define  tm:month-assoc '((1 . 31)  (2 . 59)   (3 . 90)   (4 . 120) 
+;;       		    (5 . 151) (6 . 181)  (7 . 212)  (8 . 243)
+;;       		    (9 . 273) (10 . 304) (11 . 334) (12 . 365)))
+;; 
+;; to find the number of days before the month; but actually the table
+;; is listing the number of days until the end of the month.  I believe
+;; it should be:
+
+(define  tm:month-assoc '((1 . 0) (2 . 31)  (3 . 59)   (4 . 90)   (5 . 120) 
+                          (6 . 151) (7 . 181)  (8 . 212)  (9 . 243)
+                          (10 . 273) (11 . 304) (12 . 334)))
 
 (define (tm:year-day day month year)
-  (let ((days-pr (assoc day tm:month-assoc)))
+   ;;  FIXED: this made reference to `day' and it should have been `month'
+   ;;  (let ((days-pr (assoc day tm:month-assoc)))
+  (let ((days-pr (assoc month tm:month-assoc)))
     (if (not days-pr)
-	(tm:error 'date-year-day 'invalid-month-specification month))
+	(tm:time-error 'date-year-day 'invalid-month-specification month))
     (if (and (tm:leap-year? year) (> month 2))
 	(+ day (cdr days-pr) 1)
 	(+ day (cdr days-pr)))))
@@ -1161,7 +1180,7 @@
      ((char=? ch #\8) 8)
      ((char=? ch #\9) 9)
      (else (tm:time-error 'bad-date-template-string
-			  (list "Non-integer character" ch i)))))
+			  (list "Non-integer character" ch)))))
 
 ;; read an integer upto n characters long on port; upto -> #f if any length
 (define (tm:integer-reader upto port)
@@ -1196,7 +1215,7 @@
 							   port)))
 		     (+ nchars 1)))
 	 (padding-ok
-	  (read-ch port) ; consume padding
+	  (read-char port) ; consume padding
 	  (accum-int prot accum (+ nchars 1)))
 	 (else ; padding where it shouldn't be
 	  (tm:time-error 'string->date 'bad-date-template-string 
