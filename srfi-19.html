@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <title>SRFI 19: Time Data Types Procedures</title>
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+  </head>
+
+<body>
+<H1>Title</H1>
+
+Time Data Types and Procedures
+
+<H1>Author</H1>
+
+Will Fitzgerald, Neodesic Corporation
+
+<H1>Status</H1>
+
+This SRFI is currently in ``draft'' status. To see an explanation of
+each status that a SRFI can hold, see <a
+href="http://srfi.schemers.org/srfi-process.html">here</a>. It will
+remain in draft status until 2000/05/28, or as amended. To provide
+input on this SRFI, please <a
+href="mailto:srfi-19@srfi.schemers.org">mail to
+srfi-19@srfi.schemers.org</a>.  See <a
+href="http://srfi.schemers.org/srfi-list-subscribe.html">instructions
+here</a> to subscribe to the list.  You can access previous messages
+via <a
+href="http://srfi.schemers.org/srfi-19/mail-archive/maillist.html">
+the archive of the mailing list</a>.
+<P>
+<UL>
+<LI>Draft: 2000/02/28-2000/05/28
+</UL>
+
+<H1>Abstract</H1>
+
+Time data types and procedures are introduced, similar to the time
+procedures found in Common Lisp. Four time formats are
+described. Universal Time is the number of seconds since midnight,
+January 1, 1900 UTC (Coordinated Universal Time). Decoded Time format
+represents calendar time components: second, minute, hour, date,
+month, year, day of week, whether daylights savings time is in effect,
+and time zone. Internal Time format represents internal computer time
+measurements. In addition to these formats, all found in ANSI Common
+Lisp, Julian Day Number format assigns an increasing integer to each
+day since January 1, 1 C.E.
+
+
+
+<H1>Issues</H1>[None currently]
+
+
+<H1>Rationale</H1>
+
+R5RS Scheme does not provide standard data types for time. This
+SRFI addresses this lack by specifying four data types for time and
+associated procedures.
+
+
+<H1>Specification</H1>
+
+Based on the <a href="http://www.harlequin.com/support/books/HyperSpec/Body/sec_25-1-4.html">
+ANSI Common Lisp Standard</a> definitions of time, three data types and a set of
+procedures and constants are defined.
+
+<p><b>Decoded Time</b> defines a point in time as consisting of nine components:
+<ul>
+<li><b>Second</b>, an integer between 0 and 59, inclusive,
+<li><b>Minute</b>, an integer between 0 and 59, inclusive,
+<li><b>Hour</b>, an integer between 0 and 23, inclusive,
+<li><b>Date</b>, an integer between 0 and 31, inclusive, the upper limit depending
+on the month and year of the point in time,
+<li><b>Month</b>, an integer between 1 and 12, inclusive; in which 1 means
+January, 2 February, and so on.
+<li><b>Year</b>, an integer representing the year C.E. (i.e., A.D.). If the
+integer is between 0 and 99, however, it represents the current year +
+the year (if it is less than 50) or the current year - the year (if it is
+greater than or equal to 50).
+<li><b>Day of week</b>, an integer between 0 and 6, inclusive, in which
+0 means Monday, 1 Tuesday, and so on.
+<li><b>Daylights savings time</b>, a boolean representing whether daylights
+savings time is in effect,
+<li><b>Time zone</b>, a rational number between -24 and 24, inclusive,
+which is an integral multiple of 1/3600.  This number is the
+difference (in hours) between UTC and local standard time.
+
+
+</ul>
+
+<p><b>Universal Time</b> represents time as a single, non-negative integer; the
+number of seconds since January 1, 1900 UTC. It is not defined before this date.
+Each year is exactly 86400 seconds long.
+
+<p><b>Internal Time</b> represents time as a single integer in an implementation-dependent
+form.
+
+<p><b>Julian Day
+Number</b>. In addition to these time formats defined in ANSI Common Lisp, the Julian Day
+Number  format represents time as a single, non-negative integer, the number
+of days since January 1, 1 C.E. + 1721426. The theory of Julian Day numbers
+is usefully described in <a href="http://www.tondering.dk/claus/calendar.html">
+Claus Tøndering's Frequently Asked Questions</a> about calendars.
+
+<p>
+The following procedures are required:
+
+<dl>
+<dt class=proc-def>
+<code class=proc-def>get-decoded-time</code> <var>-&gt; second minute hour date month year day-of-week dst? time-zone</var>
+<dd class=proc-def>
+    Returns the current time in Decoded Time format, that is, nine values, in the order above,
+    corresponding to the Decoded Time components.
+
+<dt call=proc-def>
+<code class=proc-def>get-universal-time</code> <var>-&gt; universal-time</var>
+<dd class=proc-def>
+    Returns the current time in Universal Time format.
+
+  <dt class=proc-def> <code class=proc-def>decode-universal-time</code> <var>universal 
+    time [time-zone] -&gt; second minute hour date month year day-of-week DST? 
+    time-zone</var> 
+  <dd class=proc-def> Decodes the universal time to Decoded Time format, that 
+    is, nine values, in the order above, corresponding to the Decoded Time components. 
+    If time-zone is specified, the time-zone is used in decoding, and DST? is 
+    set to false; otherwise, the local time zone and daylight savings time values 
+    are used. 
+  <dt class=proc-def> <code class=proc-def>encode-universal-time</code> <var>second 
+    minute hour date month year day-of-week DST? [time-zone] -&gt; universal-time 
+    </var> 
+  <dd class=proc-def> Encodes a universal time using the Decoded Time components. 
+    If time-zone is not specified, the local time zone, adjusted for daylights 
+    savings time (if in effect) is used. If time- zone is specified, it is used 
+    instead, and the <var>DST?</var> value is ignored. 
+  <dt class=proc-def>
+<code class=proc-def>encode-julian-day-number</code> <var>date month year -&gt; julian-day-number </var>
+  <dd class=proc-def> Encodes a Julian day number. 
+  <dt class=proc-def> <code class=proc-def>decode-julian-day-number</code> <var>julian-day-number 
+    -&gt;date month year</var> 
+  <dd class=proc-def> Decodes a Julian day number, returning the date, month and 
+    year. 
+  <dt class=proc-def> <code class=proc-def>get-julian-day-number</code> <var>-&gt;julian-day-number</var> 
+  <dd class=proc-def> Returns the current Julian day number. 
+  <dt class=proc-def>
+<code class=proc-def>universal-time->string</code> <var>universal-time [time-zone] -&gt;string</var>
+<dd class=proc-def>
+    Returns a string, in ISO 8601 format, representing the universal time.
+    The time-zone, if specified, is used in decoding the universal time.
+
+  <dt class=proc-def> <code class=proc-def>universal-time>date-string</code> <var>universal-time 
+    [time-zone] -&gt;string</var> 
+  <dd class=proc-def>
+    Returns a string, in ISO 8601 format, representing the date portion of the universal time.
+    The time-zone, if specified, is used in decoding the universal time.
+
+  <dt class=proc-def> <code class=proc-def>universal-time>time-string</code> <var>universal-time 
+    [time-zone] -&gt;string</var> 
+  <dd class=proc-def>
+    Returns a string, in ISO 8601 format, representing the time portion of the universal time.
+    The time-zone, if specified, is used in decoding the universal time.
+
+<dt class=proc-def>
+<code class=proc-def>string->universal-time</code> <var>string -&gt;universal-time</var>
+<dd class=proc-def>
+    Returns a universal time for the ISO 8601 formatted string. Both date and time portions of
+    the string must be specified. The time zone can be specified in the string, as well, according
+    to ISO 8601 conventions. Fractional seconds should be rounded up to the next whole second.
+    A useful description of ISO 8601 date/time formats can be found in the <a href="http://www.w3.org/TR/NOTE-datetime">
+    W3C note on date/time formats</a>, as well as <a href="http://www.cl.cam.ac.uk/~mgk25/iso-time.html">
+    Markus Kuhn's discussion</a> of the ISO 8601 standard.
+    <p>
+    The following formats must be supported (quoting from the W3C note):
+<pre>
+   Complete date plus hours and minutes:
+      YYYY-MM-DDThh:mmTZD (eg 1997-07-16T19:20+01:00)
+   Complete date plus hours, minutes and seconds:
+      YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00)
+   Complete date plus hours, minutes, seconds and a decimal fraction of a second
+      YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
+</pre>
+
+<p>where:</p>
+
+<pre>
+     YYYY = two- or four-digit year (interpreted as a Decoded Time Year component)
+     MM   = two-digit month (01=January, etc.)
+     DD   = two-digit day of month (01 through 31)
+     hh   = two digits of hour (00 through 23) (am/pm NOT allowed)
+     mm   = two digits of minute (00 through 59)
+     ss   = two digits of second (00 through 59)
+     s    = one or more digits representing a decimal fraction of a second
+     TZD  = time zone designator (Z or +hh:mm or -hh:mm)
+</pre>
+
+  <dt class=proc-def> <code class=proc-def>julian-day-number->string</code> <var>julian-day-number 
+    -&gt;string</var> 
+  <dd class=proc-def> Returns a string, in ISO 8601 date format, representing 
+    the Julian day number. 
+  <dt class=proc-def> <code class=proc-def>String->julian-day-number</code> <var>string 
+    -&gt;julian-day-number</var> 
+  <dd class=proc-def> Reads a string, in ISO 8601 date format, and returns the 
+    corresponding Julian day number. The following formats must be supported (quoting 
+    from the W3C note): 
+    <pre>
+   Complete date:
+      YYYY-MM-DD (eg 1997-07-16)
+</pre>
+
+<p>where:</p>
+
+<pre>
+     YYYY = two- or four-digit year (interpreted as a Decoded Time Year component)
+     MM   = two-digit month (01=January, etc.)
+     DD   = two-digit day of month (01 through 31)
+</pre>
+
+
+<dt class=proc-def>
+<code class=proc-def>internal-time-units-per-second</code> <var> -&gt;integer</var>
+<dd class=proc-def>
+    Returns the number of internal time units ('ticks') per Internal Time format unit. 
+    Implementation dependent, but one second must be an integer multiple of it.
+
+<dt class=proc-def>
+<code class=proc-def>get-internal-run-time</code> <var> -&gt;integer</var>
+<dd class=proc-def>
+    Returns an (implementation dependent) current run time in Internal Time format.
+<dt class=proc-def>
+
+<code class=proc-def>get-internal-real-time</code> <var> -&gt;integer</var>
+<dd class=proc-def>
+    Returns an (implementation dependent) current real time in Internal Time format.
+
+</dl>
+
+
+<H1>Implementation</H1>
+
+This SRFI has several implementation dependent requirements. The system must provide
+the following procedures, which cannot be defined using R5RS Scheme primitives.
+
+<ul>
+<li>The <code>get-decoded-time</code> procedure. Julian day numbers and
+universal time format can be derived from these.
+<li>The <code>internal-time-units-per-second</code> constant.
+<li>The <code>get-internal-run-time</code> procedure.
+<li>The <code>get-internal-real-time</code> procedure.
+</ul>
+
+<p>To be efficient, the <code>X->string</code> procedures should provide a
+more efficient method for string creation than <code>string-append</code>. The
+accompanying implementation assumes <a href="http://srfi.schemers.org/srfi-6/">SRFI 6
+Basic String Ports</a>.
+
+<p>The accompanying implementation also assumes an <code>error</code> procedure.
+
+<p>The <a href="http://www.neodesiclabs.com/will/common-time.scm">accompanying implementation</a> 
+is written in MzScheme. MzScheme provides
+the extensions <code>current-seconds</code> and <code>seconds->date</code> procedures
+out of which <code>get-decoded-time</code> can be built, with the exception that
+the MzScheme <code>date</code> data type does not implement time zones. To
+simulate this, the implementation makes the current time zone a MzScheme <code>
+parameter</code>. Calling <code>get-decoded-time</code> creates a <code>date</code>
+record for internal use (it would be nice, I think, if this were not necessary).
+
+<p>MzScheme's <code>current-process-milliseconds</code> procedure is used to implement
+<code>get-internal-run-time</code>, and MzScheme's <code>current-milliseconds</code>
+procedure is used to implement <code>get-internal-real-time</code>. The
+<code>internal-time-units-per-second</code> constant is therefore 1000.
+
+<p>In this implementation, the Decoded Time components are <b>not</b> checked 
+  for ranges. The <code>X->string</code> procedures are a little more forgiving 
+  than the formats given above suggest. In particular, any non-numeric separator 
+  between components of a date, time, or date/time string will suffice. For example, 
+  <code>(string->julian-day-number "2000/01/01")</code> as well as <code>(string->julian-day-number 
+  "2000-01-01")</code>. Also, leading zeros are not required. For example, <code>(string->julian-day-number 
+  "2000/1/1")</code> as well as <code>(string->julian-day-number "2000-01-01")</code>. 
+
+<H1>Copyright</H1>Copyright (C) Neodesic Corporation (2000). All Rights Reserved. 
+<P>This document and translations of it may be copied and furnished to others, 
+and derivative works that comment on or otherwise explain it or assist in its 
+implementation may be prepared, copied, published and distributed, in whole or 
+in part, without restriction of any kind, provided that the above copyright 
+notice and this paragraph are included on all such copies and derivative works. 
+However, this document itself may not be modified in any way, such as by 
+removing the copyright notice or references to the Scheme Request For 
+Implementation process or editors, except as needed for the purpose of 
+developing SRFIs in which case the procedures for copyrights defined in the SRFI 
+process must be followed, or as required to translate it into languages other 
+than English. 
+<P>The limited permissions granted above are perpetual and will not be revoked 
+by the authors or their successors or assigns. 
+<P>This document and the information contained herein is provided on an "AS IS" 
+basis and THE AUTHOR AND THE SRFI EDITORS DISCLAIM ALL WARRANTIES, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE 
+INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF 
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. 
+<HR>
+
+<ADDRESS>Editor: <A href="mailto:srfi-editors@srfi.schemers.org">Shriram 
+Krishnamurthi</A></ADDRESS>
+Last 
+modified <code>(display (universal-time->string (get-universal-time)))</code>: 2000-02-09T08:32:21-05:00</BODY></HTML>
