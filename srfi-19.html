@@ -4,6 +4,7 @@
   <head>
     <title>SRFI 19: Time Data Types and Procedures</title>
 <META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2014.210" name=GENERATOR>
   </head>
 
 <body>
@@ -31,21 +32,19 @@ href="http://srfi.schemers.org/srfi-19/mail-archive/maillist.html">
 the archive of the mailing list</a>.
 <P>
 <UL>
-<LI>Draft: 2000/02/28-2000/05/28
+<LI>Draft: 2000/02/28-2000/05/28 </LI>
 </UL>
 
 <H1>Abstract</H1>
 
-Time data types and procedures are introduced, similar to the time
-procedures found in Common Lisp. Four time formats are
-described. Universal Time is the number of seconds since midnight,
-January 1, 1900 UTC (Coordinated Universal Time). Decoded Time format
-represents calendar time components: second, minute, hour, date,
-month, year, day of week, whether daylights savings time is in effect,
-and time zone. Internal Time format represents internal computer time
-measurements. In addition to these formats, all found in ANSI Common
-Lisp, Julian Day Number format assigns an increasing integer to each
-day since January 1, 1 C.E.
+A point in time can be described by either a single (real) number of
+seconds, or as a complex object. The 'number of seconds' view on time
+has the advantage of being usable as any other number. The 'complex
+object' view has the advantage of mapping more closely to standard
+notions of time components, such as year, day, hour, etc. Accessor
+procedures are provided for the time object, as well as converters
+between time and seconds, and time and ISO standard time
+strings. Procedures for 'time arithmetic' and time comparisons are also defined.
 
 
 
@@ -55,227 +54,280 @@ day since January 1, 1 C.E.
 <H1>Rationale</H1>
 
 R5RS Scheme does not provide standard data types for time. This
-SRFI addresses this lack by specifying four data types for time and
+SRFI addresses this lack by specifying two data types for time and
 associated procedures.
 
 
 <H1>Specification</H1>
 
-Based on the <a href="http://www.xanalys.com/software_tools/reference/HyperSpec/Body/sec_25-1-4.html">
-ANSI Common Lisp Standard</a> definitions of time, three data types and a set of
-procedures and constants are defined.
-
-<p><b>Decoded Time</b> defines a point in time as consisting of nine components:
+<p><b>Time</b> defines a point in time as consisting of seven components:
 <ul>
-<li><b>Second</b>, an integer between 0 and 59, inclusive,
+<li><b>Second</b>, a real (potentially inexact) between 0 and 61,
+inclusive, (seconds greater than 59 are for describing rare leap seconds)
 <li><b>Minute</b>, an integer between 0 and 59, inclusive,
 <li><b>Hour</b>, an integer between 0 and 23, inclusive,
-<li><b>Date</b>, an integer between 0 and 31, inclusive, the upper limit depending
+<li><b>Day</b>, an integer between 0 and 31, inclusive, the upper limit depending
 on the month and year of the point in time,
 <li><b>Month</b>, an integer between 1 and 12, inclusive; in which 1 means
 January, 2 February, and so on.
-<li><b>Year</b>, an integer representing the year C.E. (i.e., A.D.). If the
-integer is between 0 and 99, however, it represents the current year +
-the year (if it is less than 50) or the current year - the year (if it is
-greater than or equal to 50).
-<li><b>Day of week</b>, an integer between 0 and 6, inclusive, in which
-0 means Monday, 1 Tuesday, and so on.
-<li><b>Daylights savings time</b>, a boolean representing whether daylights
-savings time is in effect,
-<li><b>Time zone</b>, a rational number between -24 and 24, inclusive,
-which is an integral multiple of 1/3600.  This number is the
-difference (in hours) between UTC and local standard time.
+<li><b>Year</b>, an integer representing the year.
+<li><b>Time zone</b>, a integer the number of seconds east of GMT for this timezone.
 
 
 </ul>
 
-<p><b>Universal Time</b> represents time as a single, non-negative integer; the
-number of seconds since January 1, 1900 UTC. It is not defined before this date.
-Each year is exactly 86400 seconds long.
-
-<p><b>Internal Time</b> represents time as a single integer in an implementation-dependent
-form.
-
-<p><b>Julian Day
-Number</b>. In addition to these time formats defined in ANSI Common Lisp, the Julian Day
-Number  format represents time as a single, non-negative integer, the number
-of days since January 1, 1 C.E. + 1721426. The theory of Julian Day numbers
-is usefully described in <a href="http://www.tondering.dk/claus/calendar.html">
-Claus Tøndering's Frequently Asked Questions</a> about calendars.
-
-<p>
-The following procedures are required:
-
-<dl>
-<dt class=proc-def>
-<code class=proc-def>get-decoded-time</code> <var>-&gt; second minute hour date month year day-of-week dst? time-zone</var>
-<dd class=proc-def>
-    Returns the current time in Decoded Time format, that is, nine values, in the order above,
-    corresponding to the Decoded Time components.
-
-<dt call=proc-def>
-<code class=proc-def>get-universal-time</code> <var>-&gt; universal-time</var>
-<dd class=proc-def>
-    Returns the current time in Universal Time format.
-
-  <dt class=proc-def> <code class=proc-def>decode-universal-time</code> <var>universal 
-    time [time-zone] -&gt; second minute hour date month year day-of-week DST? 
-    time-zone</var> 
-  <dd class=proc-def> Decodes the universal time to Decoded Time format, that 
-    is, nine values, in the order above, corresponding to the Decoded Time components. 
-    If time-zone is specified, the time-zone is used in decoding, and DST? is 
-    set to false; otherwise, the local time zone and daylight savings time values 
-    are used. 
-  <dt class=proc-def> <code class=proc-def>encode-universal-time</code> <var>second 
-    minute hour date month year day-of-week DST? [time-zone] -&gt; universal-time 
-    </var> 
-  <dd class=proc-def> Encodes a universal time using the Decoded Time components. 
-    If time-zone is not specified, the local time zone, adjusted for daylights 
-    savings time (if in effect) is used. If time- zone is specified, it is used 
-    instead, and the <var>DST?</var> value is ignored. 
-  <dt class=proc-def>
-<code class=proc-def>encode-julian-day-number</code> <var>date month year -&gt; julian-day-number </var>
-  <dd class=proc-def> Encodes a Julian day number. 
-  <dt class=proc-def> <code class=proc-def>decode-julian-day-number</code> <var>julian-day-number 
-    -&gt;date month year</var> 
-  <dd class=proc-def> Decodes a Julian day number, returning the date, month and 
-    year. 
-  <dt class=proc-def> <code class=proc-def>get-julian-day-number</code> <var>-&gt;julian-day-number</var> 
-  <dd class=proc-def> Returns the current Julian day number. 
-  <dt class=proc-def>
-<code class=proc-def>universal-time->string</code> <var>universal-time [time-zone] -&gt;string</var>
-<dd class=proc-def>
-    Returns a string, in ISO 8601 format, representing the universal time.
-    The time-zone, if specified, is used in decoding the universal time.
-
-  <dt class=proc-def> <code class=proc-def>universal-time>date-string</code> <var>universal-time 
-    [time-zone] -&gt;string</var> 
-  <dd class=proc-def>
-    Returns a string, in ISO 8601 format, representing the date portion of the universal time.
-    The time-zone, if specified, is used in decoding the universal time.
-
-  <dt class=proc-def> <code class=proc-def>universal-time>time-string</code> <var>universal-time 
-    [time-zone] -&gt;string</var> 
-  <dd class=proc-def>
-    Returns a string, in ISO 8601 format, representing the time portion of the universal time.
-    The time-zone, if specified, is used in decoding the universal time.
-
-<dt class=proc-def>
-<code class=proc-def>string->universal-time</code> <var>string -&gt;universal-time</var>
-<dd class=proc-def>
-    Returns a universal time for the ISO 8601 formatted string. Both date and time portions of
-    the string must be specified. The time zone can be specified in the string, as well, according
-    to ISO 8601 conventions. Fractional seconds should be rounded up to the next whole second.
-    A useful description of ISO 8601 date/time formats can be found in the <a href="http://www.w3.org/TR/NOTE-datetime">
-    W3C note on date/time formats</a>, as well as <a href="http://www.cl.cam.ac.uk/~mgk25/iso-time.html">
-    Markus Kuhn's discussion</a> of the ISO 8601 standard.
-    <p>
-    The following formats must be supported (quoting from the W3C note):
-<pre>
-   Complete date plus hours and minutes:
-      YYYY-MM-DDThh:mmTZD (eg 1997-07-16T19:20+01:00)
-   Complete date plus hours, minutes and seconds:
-      YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00)
-   Complete date plus hours, minutes, seconds and a decimal fraction of a second
-      YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
-</pre>
-
-<p>where:</p>
-
-<pre>
-     YYYY = two- or four-digit year (interpreted as a Decoded Time Year component)
-     MM   = two-digit month (01=January, etc.)
-     DD   = two-digit day of month (01 through 31)
-     hh   = two digits of hour (00 through 23) (am/pm NOT allowed)
-     mm   = two digits of minute (00 through 59)
-     ss   = two digits of second (00 through 59)
-     s    = one or more digits representing a decimal fraction of a second
-     TZD  = time zone designator (Z or +hh:mm or -hh:mm)
-</pre>
-
-  <dt class=proc-def> <code class=proc-def>julian-day-number->string</code> <var>julian-day-number 
-    -&gt;string</var> 
-  <dd class=proc-def> Returns a string, in ISO 8601 date format, representing 
-    the Julian day number. 
-  <dt class=proc-def> <code class=proc-def>String->julian-day-number</code> <var>string 
-    -&gt;julian-day-number</var> 
-  <dd class=proc-def> Reads a string, in ISO 8601 date format, and returns the 
-    corresponding Julian day number. The following formats must be supported (quoting 
-    from the W3C note): 
-    <pre>
-   Complete date:
-      YYYY-MM-DD (eg 1997-07-16)
-</pre>
-
-<p>where:</p>
-
-<pre>
-     YYYY = two- or four-digit year (interpreted as a Decoded Time Year component)
-     MM   = two-digit month (01=January, etc.)
-     DD   = two-digit day of month (01 through 31)
-</pre>
+<p><b>Seconds</b> represents time as a single real number, potentially
+inexact, corresponding to the number of seconds from 0 to
+implementation specific upper range, with the meaning of 0
+implementation specific.
 
 
-<dt class=proc-def>
-<code class=proc-def>internal-time-units-per-second</code> <var> -&gt;integer</var>
-<dd class=proc-def>
-    Returns the number of internal time units ('ticks') per Internal Time format unit. 
-    Implementation dependent, but one second must be an integer multiple of it.
+<P>The following procedures are required: 
+<DL>
+  <DT class=proc-def><CODE class=proc-def>current-time</CODE> <VAR>-&gt; 
+  time</VAR> 
+  <DD class=proc-def>Returns the current time as a time object. 
 
-<dt class=proc-def>
-<code class=proc-def>get-internal-run-time</code> <var> -&gt;integer</var>
-<dd class=proc-def>
-    Returns an (implementation dependent) current run time in Internal Time format.
-<dt class=proc-def>
+  <DT call="proc-def"><CODE class=proc-def>current-seconds</CODE> <VAR>-&gt; 
+  real</VAR> 
+  <DD class=proc-def>Returns the current time in seconds. 
+  <DT class=proc-def><CODE class=proc-def>make-time</CODE> 
+  <VAR>second minute hour date month year zone-offset -&gt;time </VAR> 
+  <DD class=proc-def>Creates a time object from time components.
 
-<code class=proc-def>get-internal-real-time</code> <var> -&gt;integer</var>
-<dd class=proc-def>
-    Returns an (implementation dependent) current real time in Internal Time format.
+  <DT class=proc-def><CODE class=proc-def>time-second</CODE> 
+  <VAR>time -&gt; real (0 to 61.0) </VAR>
+  <DD class=proc-def>Seconds component of time object. Potentially
+  includes leap seconds.
 
-</dl>
+  <DT class=proc-def><CODE class=proc-def>time-minute</CODE> 
+  <VAR>time -&gt; integer (0 to 59) </VAR>
+  <DD class=proc-def>Minute component of time object.
 
+  <DT class=proc-def><CODE class=proc-def>time-hour</CODE> 
+  <VAR>time -&gt; integer (0 to 23) </VAR>
+  <DD class=proc-def>Hour component of time object.
+
+  <DT class=proc-def><CODE class=proc-def>time-day</CODE> 
+  <VAR>time -&gt; integer (1 to 31) </VAR>
+  <DD class=proc-def>Day component of time object.
+
+  <DT class=proc-def><CODE class=proc-def>time-month</CODE> 
+  <VAR>time -&gt; integer (1 to 12) </VAR>
+  <DD class=proc-def>Month component of time object, where January=1,
+  February=2, etc.
+
+  <DT class=proc-def><CODE class=proc-def>time-year</CODE> 
+  <VAR>time -&gt; integer</VAR>
+  <DD class=proc-def>Year component of time object. May not be equal
+  to 0.
+
+  <DT class=proc-def><CODE class=proc-def>time-zone-offset</CODE> 
+  <VAR>time -&gt; integer</VAR>
+  <DD class=proc-def>Time zone offset for time object, the number of
+  seconds east of GMT for this time zone.
+
+  <DT class=proc-def><CODE class=proc-def>time-year-day</CODE> 
+  <VAR>time -&gt; integer (between 0 and 365)</VAR>
+  <DD class=proc-def>Returns the day of the year of this time object,
+  where 0 = January 1, etc. Maximum of 364 in non-leap years.
+
+  <DT class=proc-def><CODE class=proc-def>time-week-day</CODE> 
+  <VAR>time -&gt; integer (between 0 and 6)</VAR>
+  <DD class=proc-def>Returns the day of the week of this time object,
+  where 0 = Sunday, 1 = Monday, etc.
+
+  <DT class=proc-def><CODE class=proc-def>julian-day</CODE> 
+  <VAR>time -&gt; real</VAR>
+  <DD class=proc-def>Returns the Julian Day of the time object, where 
+  Julian Day 0 designates the 24 hours from noon UTC on 1 January 4713 BC
+ to noon UTC on 2 January 4713 BC. 
+
+  <DT class=proc-def><CODE class=proc-def>modified-julian-day</CODE> 
+  <VAR>time -&gt; real</VAR>
+  <DD class=proc-def>Returns the Modified Julian Day of the time
+  object, that is, the number of days since 17 Nov 1858 at 00:00:00 UTC.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-second!</CODE> 
+  <VAR>time real (0 to 61.0) </VAR>
+  <DD class=proc-def>Sets the Seconds component of time object. Potentially
+  includes leap seconds.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-minute!</CODE> 
+  <VAR>time integer (0 to 59) </VAR>
+  <DD class=proc-def>Sets the Minute component of time object.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-hour!</CODE> 
+  <VAR>time integer (0 to 23) </VAR>
+  <DD class=proc-def>Sets the Hour component of time object.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-day!</CODE> 
+  <VAR>time integer (1 to 31) </VAR>
+  <DD class=proc-def>Sets the Day component of time object.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-month!</CODE> 
+  <VAR>time integer (1 to 12) </VAR>
+  <DD class=proc-def>Sets the Month component of time object, where January=1,
+  February=2, etc.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-year!</CODE> 
+  <VAR>time integer</VAR>
+  <DD class=proc-def>Sets the Year component of time object. May not be equal
+  to 0.
+
+  <DT class=proc-def><CODE class=proc-def>set-time-zone-offset!</CODE> 
+  <VAR>time integer</VAR>
+  <DD class=proc-def>Sets the Time zone offset for time object, the number of
+  seconds east of GMT for this time zone.
+
+  <DT class=proc-def><CODE class=proc-def>copy-time</CODE> 
+  <VAR>time -&gt; time</VAR>
+  <DD class=proc-def>Copies a time object, creating a new object.
+
+  <DT class=proc-def><CODE class=proc-def>time-&gt;seconds</CODE> 
+  <VAR>time -&gt; real</VAR>
+  <DD class=proc-def>Converts a time object to seconds with
+  implementation-specific range. Returns #f if unable to convert.
+
+  <DT class=proc-def><CODE class=proc-def>seconds-&gt;time</CODE> 
+  <VAR>real -&gt; time</VAR>
+  <DD class=proc-def>Converts a number of seconds into a time object.
+
+  <DT class=proc-def><CODE class=proc-def>julian-day&gt;time</CODE> 
+  <VAR>real -&gt; time</VAR>
+  <DD class=proc-def>Converts a Julian Day into a time object.
+
+  <DT class=proc-def><CODE class=proc-def>modified-julian-day-&gt;time</CODE> 
+  <VAR>real -&gt; time</VAR>
+  <DD class=proc-def>Converts a Modified Julian Day into a time object.
+
+  <DT class=proc-def><CODE class=proc-def>time-&gt;universal-time!</CODE> 
+  <VAR>time -&gt; time</VAR>
+  <DD class=proc-def>Adds (subtracts) enough seconds to the time
+  object to set the time zone offset to 0. Sets the time zone offset
+  to 0, too.
+
+  <DT class=proc-def><CODE class=proc-def>time-&gt;universal-time</CODE> 
+  <VAR>time -&gt; time</VAR>
+  <DD class=proc-def>Creates a copy of the time object, and adds
+  (subtracts) enough seconds to the time object to set the time zone
+  offset to 0. Sets the time zone offset  to 0, too.
+
+  <DT class=proc-def><CODE class=proc-def>time-&gt;string</CODE> 
+  <VAR>time [include-time-zone-offset?] -&gt; string</VAR>
+  <DD class=proc-def>Converts the time object to a ISO time string,
+  including the time zone offset unless
+  <var>include-time-zone-offset?</var> is #f.
+
+  <DT class=proc-def><CODE class=proc-def>time-&gt;date-string</CODE> 
+  <VAR>time -&gt; string</VAR>
+  <DD class=proc-def>Converts the time object to a ISO time string,
+  including just the date portions of the time object (year, month,
+  day). For example, "2000-4-11".
+
+  <DT class=proc-def><CODE class=proc-def>time-&gt;hour-string</CODE> 
+  <VAR>time -&gt; string</VAR>
+  <DD class=proc-def>Converts the time object to a ISO time string,
+  including just the hour portions of the time object (hour, minute,
+  second). For example, "22:42:45.3".
+
+  <DT class=proc-def><CODE class=proc-def>time?</CODE> 
+  <VAR>object -&gt; boolean</VAR>
+  <DD class=proc-def>Returns #t if object is a time object, #f otherwise.
+
+  <DT class=proc-def><CODE class=proc-def>time=?</CODE> 
+  <VAR>time1 time2 -&gt; boolean</VAR>
+  <DD class=proc-def>Returns #t if two times are the same point in
+  time, #f otherwise. Must account for time zone offsets. 
+
+  <DT class=proc-def><CODE class=proc-def>time&gt;?</CODE> 
+  <VAR>time1 time2 -&gt; boolean</VAR>
+  <DD class=proc-def>Returns #t if time1 is after time2, #f
+  otherwise. Must account for time zone offsets.
+
+  <DT class=proc-def><CODE class=proc-def>time&lt;?</CODE> 
+  <VAR>time1 time2 -&gt; boolean</VAR>
+  <DD class=proc-def>Returns #t if time1 is before time2, #f
+  otherwise. Must account for time zone offsets.
+
+  <DT class=proc-def><CODE class=proc-def>time&gt;=?</CODE> 
+  <VAR>time1 time2 -&gt; boolean</VAR>
+  <DD class=proc-def>Returns #t if time1 is at or after time2, #f
+  otherwise. Must account for time zone offsets.
+
+  <DT class=proc-def><CODE class=proc-def>time&lt;=?</CODE> 
+  <VAR>time1 time2 -&gt; boolean</VAR>
+  <DD class=proc-def>Returns #t if time1 is at or before time2, #f
+  otherwise. Must account for time zone offsets.
+
+  <DT class=proc-def><CODE class=proc-def>add-seconds!</CODE> 
+  <VAR>time real -&gt; time</VAR>
+  <DD class=proc-def>Adds a number of seconds to a time object, side
+  effecting it. 
+
+  <DT class=proc-def><CODE class=proc-def>add-seconds</CODE> 
+  <VAR>time real -&gt; time</VAR>
+  <DD class=proc-def>Adds a number of seconds to a time object,
+  creating a new time object.
+
+  <DT class=proc-def><CODE class=proc-def>time-difference</CODE> 
+  <VAR>time1 time2 -&gt; real</VAR>
+  <DD class=proc-def>Returns the number of seconds difference between
+  two times, accounting for time zone offsets.
+
+</DL>
 
 <H1>Implementation</H1>
 
-This SRFI has several implementation dependent requirements. The system must provide
-the following procedures, which cannot be defined using R5RS Scheme primitives.
+This SRFI has several implementation dependent requirements; in
+particular, there must be some system-independent method of finding
+the current time (or current seconds).
 
-<ul>
-<li>The <code>get-decoded-time</code> procedure. Julian day numbers and
-universal time format can be derived from these.
-<li>The <code>internal-time-units-per-second</code> constant.
-<li>The <code>get-internal-run-time</code> procedure.
-<li>The <code>get-internal-real-time</code> procedure.
-</ul>
+<P>The accompanying implementation assumes <a
+href="http://srfi.schemers.org/srfi-6/">SRFI 6 Basic String Ports</a>.
+The accompanying implementation also assumes an <CODE>error</CODE>
+procedure.  The accompanying implementation also assumes <a
+href="http://srfi.schemers.org/srfi-6/">SRFI 8 RECEIVE: Binding to
+multiple values</a>.  which is easy to implement with the following
+syntax:
 
-<p>To be efficient, the <code>X->string</code> procedures should provide a
-more efficient method for string creation than <code>string-append</code>. The
-accompanying implementation assumes <a href="http://srfi.schemers.org/srfi-6/">SRFI 6
-Basic String Ports</a>.
+<CODE>
+<PRE>
+(define-syntax receive
+  (syntax-rules ()
+    ((receive formals expression body ...)
+     (call-with-values (lambda () expression)
+                       (lambda formals body ...)))))
+</PRE>
+</CODE>
 
-<p>The accompanying implementation also assumes an <code>error</code> procedure.
 
-<p>The <a href="http://www.neodesiclabs.com/will/common-time.scm">accompanying implementation</a> 
-is written in MzScheme. MzScheme provides
-the extensions <code>current-seconds</code> and <code>seconds->date</code> procedures
-out of which <code>get-decoded-time</code> can be built, with the exception that
-the MzScheme <code>date</code> data type does not implement time zones. To
-simulate this, the implementation makes the current time zone a MzScheme <code>
-parameter</code>. Calling <code>get-decoded-time</code> creates a <code>date</code>
-record for internal use (it would be nice, I think, if this were not necessary).
+<P>The <a href="http://www.neodesiclabs.com/will/srfi-19.scm">accompanying 
+implementation</a> is written in MzScheme. MzScheme provides the procedure 
+<CODE>current-seconds</CODE>, which returns the number of seconds
+since 1970-01-01T00:00:00Z+00:00. 
 
-<p>MzScheme's <code>current-process-milliseconds</code> procedure is used to implement
-<code>get-internal-run-time</code>, and MzScheme's <code>current-milliseconds</code>
-procedure is used to implement <code>get-internal-real-time</code>. The
-<code>internal-time-units-per-second</code> constant is therefore 1000.
+<p>Also, MzScheme provides a method for returning the current time
+zone offset, via its SECONDS-&gt;DATE and CURRENT-DATE procedures.
 
-<p>In this implementation, the Decoded Time components are <b>not</b> checked 
-  for ranges. The <code>X->string</code> procedures are a little more forgiving 
-  than the formats given above suggest. In particular, any non-numeric separator 
-  between components of a date, time, or date/time string will suffice. For example, 
-  <code>(string->julian-day-number "2000/01/01")</code> as well as <code>(string->julian-day-number 
-  "2000-01-01")</code>. Also, leading zeros are not required. For example, <code>(string->julian-day-number 
-  "2000/1/1")</code> as well as <code>(string->julian-day-number "2000-01-01")</code>. 
+<p>From this, the rest of the implementation
+was built. 
+
+<h1>Acknowledgements</h1>
+
+Claus
+Tøndering's<a href="http://www.tondering.dk/claus/calendar.html"> Frequently Asked Questions</a> about calendars was a very
+useful resource. The implementation of Julian Day, Modified Julian
+Day, and Year Day comes from his FAQ. Markus Kuhn has a <a
+href="http://www.cl.cam.ac.uk/~mgk25/iso-time.html">useful
+description</a> of the <a
+href="http://www.iso.ch/markete/8601.pdf">ISO Standard 8601</a> for
+Date/Time notation; The W3 Consortium also has a <a
+href="http://www.w3.org/TR/NOTE-datetime">useful Note</a>.
+
+<p>Mike Sperber, Marc Feely, Dave Mason, and "Prfnoff" all made useful
+comments on previous versions of this draft. Thanks to Shriram 
+Krishnamurthi for his editing help.
 
 <H1>Copyright</H1>Copyright (C) Neodesic Corporation (2000). All Rights Reserved. 
 <P>This document and translations of it may be copied and furnished to others, 
@@ -301,4 +353,5 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 <ADDRESS>Editor: <A href="mailto:srfi-editors@srfi.schemers.org">Shriram 
 Krishnamurthi</A></ADDRESS>
 Last 
-modified <code>(display (universal-time->string (get-universal-time)))</code>: 2000-02-09T08:32:21-05:00</BODY></HTML>
+modified <CODE>(display (time-&gt;string (time-&gt;universal-time! (current-time))))</CODE>: 
+2000-04-11T14:00:17Z+00:00</BODY></HTML>
