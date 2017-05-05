@@ -150,6 +150,7 @@ the archive of the mailing list</a>.
 <LI>Fixed reference implementation: 2003-02-28</LI>
 <LI>Documentation bug for <code>~D</code> fixed: 2003-05-30</LI>
 <LI>Various Documentation bugs fixed: 2004-03-15</LI>
+<LI>Fixed definition of Julian Day and Modified Julian Day 2017-05-05</LI>
 </UL>
 
 <H1>Abstract</H1>
@@ -238,13 +239,12 @@ January, 2 February, and so on.
 <li><b>Time zone</b>, a integer the number of seconds east of GMT for this timezone.
 </ul>
 
-<p>A <b>Julian Day</b> represents a point in time as a real number
-of days since -4714-11-24T12:00:00Z (November 24, -4714 at noon,
-UTC).
+A <b>Julian Day</b> represents a point in time as a real number of days 
+since -4713-11-24T12:00:00Z (midday UT on 24 November 4714 BC in the 
+proleptic Gregorian calendar (1 January 4713 BC in the proleptic  Julian calendar)).
 
-<p>A <b>Modified Julian Day</b> represents a point in time as a
-real number of days since 1858-11-17T00:00:00Z (November 17,
-1858 at midnight, UTC).
+A <b>Modified Julian Day</b> represents a point in time as a real number of
+days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
 
 <h2>Constants</h2>
 <P>The following constants are required: 
