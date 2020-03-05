@@ -262,7 +262,7 @@ days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
   <DT class=proc-def><CODE class=proc-def>time-thread</CODE>
   <DD class=proc-def>Symbol representing time spent in current thread.
   <DT class=proc-def><CODE class=proc-def>time-utc</CODE>
-  <DD class=proc-def>Symbol representting UTC time.
+  <DD class=proc-def>Symbol representing UTC time.
 </DL>
 <h2>Current time and clock resolution</h2>
 <P>The following procedures are required:
@@ -460,7 +460,7 @@ specification of locales is beyond this SRFI.
 <DL>
   <DT class=proc-def><CODE class=proc-def>date->string</CODE> <VAR>date</VAR> [<VAR>format-string</VAR>] -> <VAR>string</VAR>
   <DD class=proc-def>Converts a date to a string, using the format string. The format string is copied as is; except
-escape characters (indicated by the tilde) are replaced with specfic conversions. Table 1 lists the required conversion specifiers;
+escape characters (indicated by the tilde) are replaced with specific conversions. Table 1 lists the required conversion specifiers;
 implementations are free to extend this list.
   <DT class=proc-def><CODE class=proc-def>string->date</CODE> <VAR>input-string template-string</VAR> -> <VAR>date</VAR>
   <DD class=proc-def>Converts an input string to a date, using the template string. The input string must match the template
@@ -554,7 +554,7 @@ the values for <code>CURRENT-TIME</code>. The GNU C function,
 
 <p>The difference between TAI and UTC is not determinate, and
 implementations must provide some method for getting TAI. A procedure
-is provided in the accompany implmentation for reading the leap second
+is provided in the accompany implementation for reading the leap second
 table provided by the Time Service of the US Naval Observatory
 (available at <a
 href="ftp://maia.usno.navy.mil/ser7/tai-utc.dat">ftp://maia.usno.navy.mil/ser7/tai-utc.dat</a>). 
@@ -620,7 +620,7 @@ href="http://www.iso.ch/markete/8601.pdf">ISO Standard 8601</a> for
 Date/Time notation; The W3 Consortium also has a <a
 href="http://www.w3.org/TR/NOTE-datetime">useful Note</a>.
 
-<p>Mike Sperber, Marc Feely, Dave Mason, and "Prfnoff" all made useful
+<p>Mike Sperber, Marc Feeley, Dave Mason, and "Prfnoff" all made useful
 comments on previous versions of this draft. Thanks to Shriram 
 Krishnamurthi for his editing help.
 
