@@ -205,6 +205,14 @@
        (time=? ct-utc (date->time-utc cd))
        (time=? ct-tai (date->time-tai cd))))))
 
+(define-s19-test! "date->string"
+  (lambda ()
+    (let ((d (make-date 0 1 2 3 4 5 2006 0)))
+      (and
+       (string=? "3" (date->string d "~k"))
+       (string=? "3" (date->string d "~l"))))
+    ))
+
 (begin (newline) (run-s19-tests #t))
 
 
