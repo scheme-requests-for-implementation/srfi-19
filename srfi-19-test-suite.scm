@@ -209,8 +209,8 @@
   (lambda ()
     (let ((d (make-date 0 1 2 3 4 5 2006 0)))
       (and
-       (string=? "3" (date->string d "~k"))
-       (string=? "3" (date->string d "~l"))))
+       (string=? " 3" (date->string d "~k"))
+       (string=? " 3" (date->string d "~l"))))
     ))
 
 (begin (newline) (run-s19-tests #t))
