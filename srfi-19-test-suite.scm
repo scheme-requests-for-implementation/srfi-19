@@ -210,7 +210,11 @@
     (let ((d (make-date 0 1 2 3 4 5 2006 0)))
       (and
        (string=? " 3" (date->string d "~k"))
-       (string=? " 3" (date->string d "~l"))))
+       (string=? " 3" (date->string d "~l"))
+       (string=? "2006-05-04T03:02:01" (date->string d "~5"))
+       (string=? "2006-05-04T03:02:01Z" (date->string d "~4"))
+       (string=? "03:02:01" (date->string d "~3"))
+       (string=? "03:02:01Z" (date->string d "~2"))))
     ))
 
 (begin (newline) (run-s19-tests #t))
