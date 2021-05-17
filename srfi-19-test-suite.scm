@@ -217,6 +217,46 @@
        (string=? "03:02:01Z" (date->string d "~2"))))
     ))
 
+(let ((dates '((2020 12 31 . "53") ; Thursday, week 53
+               (2021 1 1   . "53") ; Friday, week 53 (previous year)
+               (2021 1 3   . "53") ; Sunday, week 53 (previous year)
+               (2021 1 4   . "01") ; Monday, week 1
+
+               (2019 12 29 . "52") ; Sunday, week 52
+               (2019 12 30 . "01") ; Monday, week 1 (next year)
+               (2019 12 31 . "01") ; Tuesday, week 1 (next year)
+               (2020 1 1   . "01") ; Wednesday, week 1
+
+               (2016 12 31 . "52") ; Saturday, week 52
+               (2017 1 1   . "52") ; Sunday, week 52 (previous year)
+               (2017 1 2   . "01") ; Monday, week 1
+               (2017 1 8   . "01") ; Sunday, week 1
+               (2017 1 9   . "02") ; Monday, week 2
+
+               (2014 12 28 . "52") ; Sunday, week 52
+               (2014 12 29 . "01") ; Monday, week 1 (next year)
+               (2014 12 30 . "01") ; Tuesday, week 1 (next year)
+               (2014 12 31 . "01") ; Wednesday, week 1 (next year)
+               (2015 1 1   . "01") ; Thursday, week 1
+               (2015 1 2   . "01") ; Friday, week 1
+               (2015 1 3   . "01") ; Saturday, week 1
+               (2015 1 4   . "01") ; Sunday, week 1
+               (2015 1 5   . "02") ; Monday, week 2
+               )))
+  (for-each
+   (lambda (date)
+     (let ((p (open-output-string)))
+       (display "date->string ~V " p)
+       (write date p)
+       (define-s19-test! (get-output-string p)
+         (lambda ()
+           (equal? (date->string (make-date 0 0 0 0
+                                            (caddr date) (cadr date) (car date)
+                                            0)
+                                "~V")
+                   (cdddr date))))))
+   dates))
+
 (begin (newline) (run-s19-tests #t))
 
 
