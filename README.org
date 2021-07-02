@@ -6,6 +6,8 @@
 
 keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]]
 
+library-name: time
+
 This repository hosts [[https://srfi.schemers.org/srfi-19/][SRFI 19]]: Time Data Types and Procedures, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /final/ status.
