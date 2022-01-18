@@ -181,7 +181,7 @@ associated procedures.
 
 <p>A <b>Time</b> object, which is distinct from all existing types,
 defines a point in time or a time duration in some standard time
-system. The standard time systems are:
+system. The standard <span id="timesystem">time systems</a> are:
 
 <ul>
   <li>Universal Coordinated Time (UTC),
@@ -198,7 +198,7 @@ time in current process, and time duration. Implementations are
 allowed to create extensions (for example, amount of time spent in
 garbage collection).
 
-<p>A time object consists of three components: 
+<p>A <span id="timeobject">time object</span> consists of three components:
 <ul>
   <li><b>Time type</b>, a symbol representing the time system
   representation used. The constants <code>TIME-TAI</code>,
@@ -215,7 +215,7 @@ garbage collection).
   may have a lower resolution.
 </ul>
 
-<p>A <b>Date</b> object, which is distinct from all existing
+<p>A <b name="dateobject">Date</b> object, which is distinct from all existing
 types, represents a point in time as represented by the Gregorian
 calendar as well as by a time zone. Dates are immutable.  A date
 consists of the following components:
@@ -231,7 +231,7 @@ on the month and year of the point in time,
 <li><b>Month</b>, an integer between 1 and 12, inclusive; in which 1 means
 January, 2 February, and so on.
 <li><b>Year</b>, an integer representing the year.
-<li><b>Time zone</b>, a integer the number of seconds east of GMT for this timezone.
+<li><b>Time zone</b>, an integer representing the number of seconds east of GMT for this timezone.
 </ul>
 
 A <b>Julian Day</b> represents a point in time as a real number of days 
@@ -245,55 +245,55 @@ days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
 <P>The following constants are required: 
 
 <DL>
-  <DT class=proc-def><CODE class=proc-def>time-duration</CODE> 
+  <DT class=proc-def id="time-duration"><CODE class=proc-def>time-duration</CODE>
   <DD class=proc-def>Symbol representing Time duration.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic</CODE>
+  <DT class=proc-def id="time-monotonic"><CODE class=proc-def>time-monotonic</CODE>
   <DD class=proc-def>Symbol representing monotonic time.
-  <DT class=proc-def><CODE class=proc-def>time-process</CODE>
+  <DT class=proc-def id="time-process"><CODE class=proc-def>time-process</CODE>
   <DD class=proc-def>Symbol representing time spent in current process.
-  <DT class=proc-def><CODE class=proc-def>time-tai</CODE>
+  <DT class=proc-def id="time-tai"><CODE class=proc-def>time-tai</CODE>
   <DD class=proc-def>Symbol representing TAI time.
-  <DT class=proc-def><CODE class=proc-def>time-thread</CODE>
+  <DT class=proc-def id="time-thread"><CODE class=proc-def>time-thread</CODE>
   <DD class=proc-def>Symbol representing time spent in current thread.
-  <DT class=proc-def><CODE class=proc-def>time-utc</CODE>
+  <DT class=proc-def id="time-utc"><CODE class=proc-def>time-utc</CODE>
   <DD class=proc-def>Symbol representing UTC time.
 </DL>
 <h2>Current time and clock resolution</h2>
 <P>The following procedures are required:
 
 <DL>
-  <DT class=proc-def><CODE class=proc-def>current-date</CODE> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
+  <DT class=proc-def id="current-date"><CODE class=proc-def>current-date</CODE> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
   <DD class=proc-def>Date corresponding to the current UTC time. 
-  <DT class=proc-def><CODE class=proc-def>current-julian-day</CODE> -> <VAR>jdn</VAR>
+  <DT class=proc-def id="current-julian-day"><CODE class=proc-def>current-julian-day</CODE> -> <VAR>jdn</VAR>
   <DD class=proc-def>Current Julian Day.
-  <DT class=proc-def><CODE class=proc-def>current-modified-julian-day</CODE> -> <VAR>mjdn</VAR>
+  <DT class=proc-def id="current-modified-julian-day"><CODE class=proc-def>current-modified-julian-day</CODE> -> <VAR>mjdn</VAR>
   <DD class=proc-def>Current Modified Julian Day.
-  <DT class=proc-def><CODE class=proc-def>current-time</CODE> [<VAR>time-type</VAR>] -> <VAR>time</VAR>
+  <DT class=proc-def id="current-time"><CODE class=proc-def>current-time</CODE> [<VAR>time-type</VAR>] -> <VAR>time</VAR>
   <DD class=proc-def>Current time, of type <code>time-type</code> system, which defaults to <code>TIME-UTC</code>.
-  <DT class=proc-def><CODE class=proc-def>time-resolution</CODE> [<VAR>time-type</VAR>] -> <VAR>integer</VAR>
+  <DT class=proc-def id="time-resolution"><CODE class=proc-def>time-resolution</CODE> [<VAR>time-type</VAR>] -> <VAR>integer</VAR>
   <DD class=proc-def>Clock resolution, in nanoseconds, of the system clock of type type <code>time-type</code> system, which defaults to <code>TIME-UTC</code>.
 </DL>
 <h2>Time object and accessors</h2>
 <P>The following procedures are required:
 <DL>
-  <DT class=proc-def><CODE class=proc-def>make-time</CODE> <VAR>type nanosecond second</VAR> -> <VAR>time</VAR>
+  <DT class=proc-def id="make-time"><CODE class=proc-def>make-time</CODE> <VAR>type nanosecond second</VAR> -> <VAR>time</VAR>
   <DD class=proc-def>Creates a time object.
-  <DT class=proc-def><CODE class=proc-def>time?</CODE> <VAR>object</VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="time-p"><CODE class=proc-def>time?</CODE> <VAR>object</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if object is a time object, otherwise, <code>#f</code>.
-  <DT class=proc-def><CODE class=proc-def>time-type</CODE> <VAR>time</VAR> -> <VAR>time-type</VAR>
+  <DT class=proc-def id="time-type"><CODE class=proc-def>time-type</CODE> <VAR>time</VAR> -> <VAR>time-type</VAR>
   <DD class=proc-def>Time type.
-  <DT class=proc-def><CODE class=proc-def>time-nanosecond</CODE> <VAR>time</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="time-nanosecond"><CODE class=proc-def>time-nanosecond</CODE> <VAR>time</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Time nanosecond.
-  <DT class=proc-def><CODE class=proc-def>time-second</CODE> <VAR>time</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="time-second"><CODE class=proc-def>time-second</CODE> <VAR>time</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Time second.
-  <DT class=proc-def><CODE class=proc-def>set-time-type!</CODE> <VAR>time time-type</VAR>
+  <DT class=proc-def id="set-time-type!"><CODE class=proc-def>set-time-type!</CODE> <VAR>time time-type</VAR>
   <DD class=proc-def>Changes time type. Note: This changes the semantics of the time object. To convert a time to another
                      system of representation, use one of the conversion procedures.
-  <DT class=proc-def><CODE class=proc-def>set-time-nanosecond!</CODE> <VAR>time integer</VAR>
+  <DT class=proc-def id="set-time-nanosecond!"><CODE class=proc-def>set-time-nanosecond!</CODE> <VAR>time integer</VAR>
   <DD class=proc-def>Changes time nanosecond.
-  <DT class=proc-def><CODE class=proc-def>set-time-second!</CODE> <VAR>time integer</VAR>
+  <DT class=proc-def id="set-time-second!"><CODE class=proc-def>set-time-second!</CODE> <VAR>time integer</VAR>
   <DD class=proc-def>Changes time second.
-  <DT class=proc-def><CODE class=proc-def>copy-time</CODE> <VAR>time1</VAR> -> <VAR>time2</VAR>
+  <DT class=proc-def id="copy-time"><CODE class=proc-def>copy-time</CODE> <VAR>time1</VAR> -> <VAR>time2</VAR>
   <DD class=proc-def>Creates a new time object, with the same time type, nanosecond, and second as <var>time1</var>.
 </DL>
 
@@ -309,15 +309,15 @@ described in parentheses.
 
 <p> The following procedures are required:
 <DL>
-  <DT class=proc-def><CODE class=proc-def>time&lt;=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="time<=-p"><CODE class=proc-def>time&lt;=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> is before or at (less than or equal to) <var>time2</var>, <code>#f</code> otherwise. 
-  <DT class=proc-def><CODE class=proc-def>time&lt;?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="time<-p"><CODE class=proc-def>time&lt;?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> is before (less than) <var>time2</var>, <code>#f</code> otherwise. 
-  <DT class=proc-def><CODE class=proc-def>time=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="time=-p"><CODE class=proc-def>time=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> at (equal) <var>time2</var>, <code>#f</code> otherwise. 
-  <DT class=proc-def><CODE class=proc-def>time&gt;=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="time>=-p"><CODE class=proc-def>time&gt;=?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> is at or after (greater than or equal to) <var>time2</var>, <code>#f</code> otherwise. 
-  <DT class=proc-def><CODE class=proc-def>time&gt;?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="time>-p"><CODE class=proc-def>time&gt;?</CODE> <VAR>time1 time2</VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if <var>time1</var> is after (greater than) <var>time2</var>, <code>#f</code> otherwise. 
 </DL>
 
@@ -325,17 +325,17 @@ described in parentheses.
 
 <P>The following procedures are required.
 <DL>
-  <DT class=proc-def><CODE class=proc-def>time-difference</CODE> <VAR>time1 time2</VAR> -> <VAR>time-duration</VAR>
+  <DT class=proc-def id="time-difference"><CODE class=proc-def>time-difference</CODE> <VAR>time1 time2</VAR> -> <VAR>time-duration</VAR>
   <DD class=proc-def>The <code>TIME-DURATION</code> between <VAR>time1</VAR> and <VAR>time2</VAR>. It is an error if <VAR>time1</VAR> and <VAR>time2</VAR> are of different time types. A new time object is created.
-  <DT class=proc-def><CODE class=proc-def>time-difference!</CODE> <VAR>time1 time2</VAR> -> <VAR>time-duration</VAR>
+  <DT class=proc-def id="time-difference!"><CODE class=proc-def>time-difference!</CODE> <VAR>time1 time2</VAR> -> <VAR>time-duration</VAR>
   <DD class=proc-def>The <code>TIME-DURATION</code> between <VAR>time1</VAR> and <VAR>time2</VAR>. It is an error if <VAR>time1</VAR> and <VAR>time2</VAR> are of different time types. <var>Time1</var> may be used to create the resulting <code>TIME-DURATION</code> object.
-  <DT class=proc-def><CODE class=proc-def>add-duration</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
+  <DT class=proc-def id="add-duration"><CODE class=proc-def>add-duration</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
   <DD class=proc-def>The time resulting from adding <VAR>time-duration</VAR> to  <VAR>time1</VAR>, which is a time object of the same time type as  <VAR>time1</VAR>. A new time object is created.
-  <DT class=proc-def><CODE class=proc-def>add-duration!</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
+  <DT class=proc-def id="add-duration!"><CODE class=proc-def>add-duration!</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
   <DD class=proc-def>The time resulting from adding <VAR>time-duration</VAR> to  <VAR>time1</VAR>, which is a time object of the same time type as  <VAR>time1</VAR>. <var>Time1</var> may used to create the resulting time object.
-  <DT class=proc-def><CODE class=proc-def>subtract-duration</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
+  <DT class=proc-def id="subtract-duration"><CODE class=proc-def>subtract-duration</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
   <DD class=proc-def>The time resulting from subtracting <VAR>time-duration</VAR> to  <VAR>time1</VAR>, which is a time object of the same time type as  <VAR>time1</VAR>. A new time object is created.
-  <DT class=proc-def><CODE class=proc-def>subtract-duration!</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
+  <DT class=proc-def id="subtract-duration!"><CODE class=proc-def>subtract-duration!</CODE> <VAR>time1 time-duration</VAR> -> <VAR>time</VAR>
   <DD class=proc-def>The time resulting from subtracting <VAR>time-duration</VAR> to  <VAR>time1</VAR>, which is a time object of the same time type as  <VAR>time1</VAR>. <var>Time1</var> may used to create the resulting time object.
 </DL>
 
@@ -343,32 +343,31 @@ described in parentheses.
 
 <P>Date objects are immutable once created. The following procedures are required.
 <DL>
-
-  <DT class=proc-def><CODE class=proc-def>make-date</CODE> <VAR>nanosecond second minute hour day month year zone-offset</VAR> -> <VAR>date</VAR>
+  <DT class=proc-def id="make-date"><CODE class=proc-def>make-date</CODE> <VAR>nanosecond second minute hour day month year zone-offset</VAR> -> <VAR>date</VAR>
   <DD class=proc-def>Creates a date object.
-  <DT class=proc-def><CODE class=proc-def>date?</CODE> <VAR>date </VAR> -> <VAR>boolean</VAR>
+  <DT class=proc-def id="date-p"><CODE class=proc-def>date?</CODE> <VAR>date </VAR> -> <VAR>boolean</VAR>
   <DD class=proc-def><code>#t</code> if object is a time object, otherwise, <code>#f</code>.
-  <DT class=proc-def><CODE class=proc-def>date-nanosecond</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-nanosecond"><CODE class=proc-def>date-nanosecond</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date nanosecond.
-  <DT class=proc-def><CODE class=proc-def>date-second</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-second"><CODE class=proc-def>date-second</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date second.
-  <DT class=proc-def><CODE class=proc-def>date-minute</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-minute"><CODE class=proc-def>date-minute</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date minute.
-  <DT class=proc-def><CODE class=proc-def>date-hour</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-hour"><CODE class=proc-def>date-hour</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date hour.
-  <DT class=proc-def><CODE class=proc-def>date-day</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-day"><CODE class=proc-def>date-day</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date day.
-  <DT class=proc-def><CODE class=proc-def>date-month</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-month"><CODE class=proc-def>date-month</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date month.
-  <DT class=proc-def><CODE class=proc-def>date-year</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-year"><CODE class=proc-def>date-year</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date year.
-  <DT class=proc-def><CODE class=proc-def>date-zone-offset</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-zone-offset"><CODE class=proc-def>date-zone-offset</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>Date time zone offset.
-  <DT class=proc-def><CODE class=proc-def>date-year-day</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-year-day"><CODE class=proc-def>date-year-day</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>The ordinal day of the year of this date. January 1 is 1, etc.
-  <DT class=proc-def><CODE class=proc-def>date-week-day</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-week-day"><CODE class=proc-def>date-week-day</CODE> <VAR>date</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>The day of the week of this date, where Sunday=0, Monday=1, etc.
-  <DT class=proc-def><CODE class=proc-def>date-week-number</CODE> <VAR>date day-of-week-starting-week</VAR> -> <VAR>integer</VAR>
+  <DT class=proc-def id="date-week-number"><CODE class=proc-def>date-week-number</CODE> <VAR>date day-of-week-starting-week</VAR> -> <VAR>integer</VAR>
   <DD class=proc-def>The ordinal week of the year which holds this date, ignoring a first partial week. 'Day-of-week-starting-week' is the integer corresponding to the day of the week which is to be considered the first day of the week (Sunday=0, Monday=1, etc.).
 </DL>
 
@@ -376,73 +375,73 @@ described in parentheses.
 
 The following conversion procedures are required.
 <DL>
-  <DT class=proc-def><CODE class=proc-def>date->julian-day</CODE> <VAR>date</VAR> -> <VAR>jd</VAR>
+  <DT class=proc-def id="date->julian-day"><CODE class=proc-def>date->julian-day</CODE> <VAR>date</VAR> -> <VAR>jd</VAR>
   <DD class=proc-def>Convert date to Julian Day.
-  <DT class=proc-def><CODE class=proc-def>date->modified-julian-day</CODE> <VAR>date</VAR> -> <VAR>mjd</VAR>
+  <DT class=proc-def id="date->modified-julian-day"><CODE class=proc-def>date->modified-julian-day</CODE> <VAR>date</VAR> -> <VAR>mjd</VAR>
   <DD class=proc-def>Convert date to Modified Julian Day.
-  <DT class=proc-def><CODE class=proc-def>date->time-monotonic</CODE> <VAR>date</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="date->time-monotonic"><CODE class=proc-def>date->time-monotonic</CODE> <VAR>date</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert date to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>date->time-tai</CODE> <VAR>date</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="date->time-tai"><CODE class=proc-def>date->time-tai</CODE> <VAR>date</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert date to TAI time.
-  <DT class=proc-def><CODE class=proc-def>date->time-utc</CODE> <VAR>date</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="date->time-utc"><CODE class=proc-def>date->time-utc</CODE> <VAR>date</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert date to UTC time.
-  <DT class=proc-def><CODE class=proc-def>julian-day->date</CODE> <VAR>jd</VAR>  [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
+  <DT class=proc-def id="julian-day->date"><CODE class=proc-def>julian-day->date</CODE> <VAR>jd</VAR>  [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
   <DD class=proc-def>Convert Julian Day to date, , using time zone offset, which defaults to the local time zone.
-  <DT class=proc-def><CODE class=proc-def>julian-day->time-monotonic</CODE> <VAR>jd</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="julian-day->time-monotonic"><CODE class=proc-def>julian-day->time-monotonic</CODE> <VAR>jd</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert Julian Day to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>julian-day->time-tai</CODE> <VAR>jd</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="julian-day->time-tai"><CODE class=proc-def>julian-day->time-tai</CODE> <VAR>jd</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert Julian Day to TAI time.
-  <DT class=proc-def><CODE class=proc-def>julian-day->time-utc</CODE> <VAR>jd</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="julian-day->time-utc"><CODE class=proc-def>julian-day->time-utc</CODE> <VAR>jd</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert Julian Day to UTC time.
-  <DT class=proc-def><CODE class=proc-def>modified-julian-day->date</CODE> <VAR>mjd</VAR> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
+  <DT class=proc-def id="modified-julian-day->date"><CODE class=proc-def>modified-julian-day->date</CODE> <VAR>mjd</VAR> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
   <DD class=proc-def>Convert Modified Julian Day to date, using time zone offset, which defaults to the local time zone.
-  <DT class=proc-def><CODE class=proc-def>modified-julian-day->time-monotonic</CODE> <VAR>mjd</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="modified-julian-day->time-monotonic"><CODE class=proc-def>modified-julian-day->time-monotonic</CODE> <VAR>mjd</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert Modified Julian Day to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>modified-julian-day->time-tai</CODE> <VAR>mjd</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="modified-julian-day->time-tai"><CODE class=proc-def>modified-julian-day->time-tai</CODE> <VAR>mjd</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert Modified Julian Day to TAI time.
-  <DT class=proc-def><CODE class=proc-def>modified-julian-day->time-utc</CODE> <VAR>mjd</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="modified-julian-day->time-utc"><CODE class=proc-def>modified-julian-day->time-utc</CODE> <VAR>mjd</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert Modified Julian Day to UTC time.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->date</CODE> <VAR>time-monotonic</VAR> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
+  <DT class=proc-def id="time-monotonic->date"><CODE class=proc-def>time-monotonic->date</CODE> <VAR>time-monotonic</VAR> [<VAR>tz-offset</VAR>] -> <VAR>date</VAR>
   <DD class=proc-def>Convert monotonic time to date, using time zone offset, which defaults to the local time zone.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->julian-day</CODE> <VAR>time-monotonic</VAR> -> <VAR>jd</VAR>
+  <DT class=proc-def id="time-monotonic->julian-day"><CODE class=proc-def>time-monotonic->julian-day</CODE> <VAR>time-monotonic</VAR> -> <VAR>jd</VAR>
   <DD class=proc-def>Convert monotonic time to Julian Day.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->modified-julian-day</CODE> <VAR>time-monotonic</VAR> -> <VAR>mjd</VAR>
+  <DT class=proc-def id="time-monotonic->modified-julian-day"><CODE class=proc-def>time-monotonic->modified-julian-day</CODE> <VAR>time-monotonic</VAR> -> <VAR>mjd</VAR>
   <DD class=proc-def>Convert monotonic time to Modified Julian Day.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->time-tai</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="time-monotonic->time-tai"><CODE class=proc-def>time-monotonic->time-tai</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert monotonic time to TAI time.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->time-tai!</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="time-monotonic->time-tai!"><CODE class=proc-def>time-monotonic->time-tai!</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert monotonic time to TAI time. The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->time-utc</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="time-monotonic->time-utc"><CODE class=proc-def>time-monotonic->time-utc</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert monotonic time to UTC time.
-  <DT class=proc-def><CODE class=proc-def>time-monotonic->time-utc!</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="time-monotonic->time-utc!"><CODE class=proc-def>time-monotonic->time-utc!</CODE> <VAR>time-monotonic</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert monotonic time to UTC time.  The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-tai->date</CODE> <VAR>time-tai [tz-offset]</VAR> -> <VAR>date</VAR>
+  <DT class=proc-def id="time-tai->date"><CODE class=proc-def>time-tai->date</CODE> <VAR>time-tai [tz-offset]</VAR> -> <VAR>date</VAR>
   <DD class=proc-def>Convert TAI time to date, using time zone offset, which defaults to the local time zone.
-  <DT class=proc-def><CODE class=proc-def>time-tai->julian-day</CODE> <VAR>time-tai</VAR> -> <VAR>jd</VAR>
+  <DT class=proc-def id="time-tai->julian-day"><CODE class=proc-def>time-tai->julian-day</CODE> <VAR>time-tai</VAR> -> <VAR>jd</VAR>
   <DD class=proc-def>Convert TAI time to Julian Day.
-  <DT class=proc-def><CODE class=proc-def>time-tai->modified-julian-day</CODE> <VAR>time-tai</VAR> -> <VAR>mjd</VAR>
+  <DT class=proc-def id="time-tai->modified-julian-day"><CODE class=proc-def>time-tai->modified-julian-day</CODE> <VAR>time-tai</VAR> -> <VAR>mjd</VAR>
   <DD class=proc-def>Convert TAI time to Modified Julian Day.
-  <DT class=proc-def><CODE class=proc-def>time-tai->time-monotonic</CODE> <VAR>time-tai</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="time-tai->time-monotonic"><CODE class=proc-def>time-tai->time-monotonic</CODE> <VAR>time-tai</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert TAI time to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>time-tai->time-monotonic!</CODE> <VAR>time-tai</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="time-tai->time-monotonic!"><CODE class=proc-def>time-tai->time-monotonic!</CODE> <VAR>time-tai</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert TAI time to monotonic time. The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-tai->time-utc</CODE> <VAR>time-tai</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="time-tai->time-utc"><CODE class=proc-def>time-tai->time-utc</CODE> <VAR>time-tai</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert TAI time to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>time-tai->time-utc!</CODE> <VAR>time-tai</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="time-tai->time-utc!"><CODE class=proc-def>time-tai->time-utc!</CODE> <VAR>time-tai</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert TAI time to monotonic time. The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-utc->date</CODE> <VAR>time-utc [tz-offset]</VAR> -> <VAR>time-utc</VAR>
+  <DT class=proc-def id="time-utc->date"><CODE class=proc-def>time-utc->date</CODE> <VAR>time-utc [tz-offset]</VAR> -> <VAR>time-utc</VAR>
   <DD class=proc-def>Convert UTC time to date, using time zone offset, which defaults to the local time zone.
-  <DT class=proc-def><CODE class=proc-def>time-utc->julian-day</CODE> <VAR>time-utc</VAR> -> <VAR>jd</VAR>
+  <DT class=proc-def id="time-utc->julian-day"><CODE class=proc-def>time-utc->julian-day</CODE> <VAR>time-utc</VAR> -> <VAR>jd</VAR>
   <DD class=proc-def>Convert UTC time to Julian Day
-  <DT class=proc-def><CODE class=proc-def>time-utc->modified-julian-day</CODE> <VAR>time-utc</VAR> -> <VAR>mjd</VAR>
+  <DT class=proc-def id="time-utc->modified-julian-day"><CODE class=proc-def>time-utc->modified-julian-day</CODE> <VAR>time-utc</VAR> -> <VAR>mjd</VAR>
   <DD class=proc-def>Convert UTC time to Modified Julian Day.
-  <DT class=proc-def><CODE class=proc-def>time-utc->time-monotonic</CODE> <VAR>time-utc</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="time-utc->time-monotonic"><CODE class=proc-def>time-utc->time-monotonic</CODE> <VAR>time-utc</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert UTC time to monotonic time.
-  <DT class=proc-def><CODE class=proc-def>time-utc->time-monotonic!</CODE> <VAR>time-utc</VAR> -> <VAR>time-monotonic</VAR>
+  <DT class=proc-def id="time-utc->time-monotonic!"><CODE class=proc-def>time-utc->time-monotonic!</CODE> <VAR>time-utc</VAR> -> <VAR>time-monotonic</VAR>
   <DD class=proc-def>Convert UTC time to monotonic time. The time structure may be reused.
-  <DT class=proc-def><CODE class=proc-def>time-utc->time-tai</CODE> <VAR>time-utc</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="time-utc->time-tai"><CODE class=proc-def>time-utc->time-tai</CODE> <VAR>time-utc</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert UTC time to TAI time.
-  <DT class=proc-def><CODE class=proc-def>time-utc->time-tai!</CODE> <VAR>time-utc</VAR> -> <VAR>time-tai</VAR>
+  <DT class=proc-def id="time-utc->time-tai!"><CODE class=proc-def>time-utc->time-tai!</CODE> <VAR>time-utc</VAR> -> <VAR>time-tai</VAR>
   <DD class=proc-def>Convert UTC time to TAI time. The time structure may be reused.
 </DL>
 
@@ -452,11 +451,11 @@ These procedures provide conversion to and from strings. They are required. The 
 specification of locales is beyond this SRFI.
 
 <DL>
-  <DT class=proc-def><CODE class=proc-def>date->string</CODE> <VAR>date</VAR> [<VAR>format-string</VAR>] -> <VAR>string</VAR>
+  <DT class=proc-def id="date->string"><CODE class=proc-def>date->string</CODE> <VAR>date</VAR> [<VAR>format-string</VAR>] -> <VAR>string</VAR>
   <DD class=proc-def>Converts a date to a string, using the format string. The format string is copied as is; except
 escape characters (indicated by the tilde) are replaced with specific conversions. Table 1 lists the required conversion specifiers;
 implementations are free to extend this list.
-  <DT class=proc-def><CODE class=proc-def>string->date</CODE> <VAR>input-string template-string</VAR> -> <VAR>date</VAR>
+  <DT class=proc-def id="string->date"><CODE class=proc-def>string->date</CODE> <VAR>input-string template-string</VAR> -> <VAR>date</VAR>
   <DD class=proc-def>Converts an input string to a date, using the template string. The input string must match the template
 sting as is; except escape characters (indicate by the tilde) indicate special converters which (1) move to the next character in the input string fulfilling a criterion; (2) read a value, and (3) act on this value in some way. Table 2 lists the required 
 converters; implementations are free to extend this list.
