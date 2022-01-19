@@ -1,10 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<html lang="en">
   <head>
     <title>SRFI 19: Time Data Types and Procedures</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/srfi.css" type="text/css" />
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css" />
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
     <meta charset="utf-8" />
     <meta name="keywords" content="Scheme, programming language, time
     processing, date processing, Julian Day, SRFI, overdone temporal smut">
@@ -21,8 +22,8 @@
 
 	   code, pre { font-family: "courier new", "courier"; }
 
-           h1 { margin-left: -5%; }
-	   h1, h2 { clear: both; }
+           h2 { margin-left: -5%; }
+	   h2, h3 { clear: both; }
 	   h1, h2, h3, h4, h5, h6 { color: black }
 	   div.title-text { font-size: large; font-weight: bold; }
 
@@ -126,15 +127,11 @@
 
 <body>
 
-<H1>Title</H1>
+<h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>19: Time Data Types and Procedures</h1>
 
-Time Data Types and Procedures
+<p>by Will Fitzgerald</p>
 
-<H1>Author</H1>
-
-Will Fitzgerald
-
-<H1>Status</H1>
+<h2>Status</h2>
 
 <p>This SRFI is currently in <em>final</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+19+at+srfi+dotschemers+dot+org">srfi-19@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-19">archive</a>.</p>
 <UL>
@@ -148,7 +145,7 @@ Will Fitzgerald
     <LI>2017-05-05 (Fixed definition of Julian Day and Modified Julian Day.)</LI>
     <LI>2019-6-11 (Fixed week number definitions in Table 1.  Note that this was an incompatible change to the API.)</LI></UL></LI></UL>
 
-<H1>Abstract</H1>
+<h2>Abstract</h2>
 
 Points in time are represented as the number of seconds (with
 nanosecond precision) since "the epoch," a zero point in time. Several
@@ -167,17 +164,17 @@ time zone offset from UTC. Procedures for
 converting between time and dates are provided, as well as for reading
 and writing string representations of dates.
 
-<H1>Issues</H1>[None currently]
+<h2>Issues</h2>[None currently]
 
 
-<H1>Rationale</H1>
+<h2>Rationale</h2>
 
 R5RS Scheme does not provide standard data types for time. This
 SRFI addresses this lack by specifying data types for time and
 associated procedures.
 
 
-<H1>Specification</H1>
+<h2>Specification</h2>
 
 <p>A <b>Time</b> object, which is distinct from all existing types,
 defines a point in time or a time duration in some standard time
@@ -241,7 +238,7 @@ proleptic Gregorian calendar (1 January 4713 BC in the proleptic  Julian calenda
 A <b>Modified Julian Day</b> represents a point in time as a real number of
 days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
 
-<h2>Constants</h2>
+<h3>Constants</h3>
 <P>The following constants are required: 
 
 <DL>
@@ -258,7 +255,7 @@ days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
   <DT class=proc-def id="time-utc"><CODE class=proc-def>time-utc</CODE>
   <DD class=proc-def>Symbol representing UTC time.
 </DL>
-<h2>Current time and clock resolution</h2>
+<h3>Current time and clock resolution</h3>
 <P>The following procedures are required:
 
 <DL>
@@ -273,7 +270,7 @@ days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
   <DT class=proc-def id="time-resolution"><CODE class=proc-def>time-resolution</CODE> [<VAR>time-type</VAR>] -> <VAR>integer</VAR>
   <DD class=proc-def>Clock resolution, in nanoseconds, of the system clock of type type <code>time-type</code> system, which defaults to <code>TIME-UTC</code>.
 </DL>
-<h2>Time object and accessors</h2>
+<h3>Time object and accessors</h3>
 <P>The following procedures are required:
 <DL>
   <DT class=proc-def id="make-time"><CODE class=proc-def>make-time</CODE> <VAR>type nanosecond second</VAR> -> <VAR>time</VAR>
@@ -297,7 +294,7 @@ days since 1858-11-17T00:00:00Z (midnight UT on 17 November AD 1858).
   <DD class=proc-def>Creates a new time object, with the same time type, nanosecond, and second as <var>time1</var>.
 </DL>
 
-<h2>Time comparison procedures</h2>
+<h3>Time comparison procedures</h3>
 
 <P>All of the time comparison procedures require the time objects to
 be of the same type. It is an error to use these procedures on time
@@ -321,7 +318,7 @@ described in parentheses.
   <DD class=proc-def><code>#t</code> if <var>time1</var> is after (greater than) <var>time2</var>, <code>#f</code> otherwise. 
 </DL>
 
-<h2>Time arithmetic procedures</h2>
+<h3>Time arithmetic procedures</h3>
 
 <P>The following procedures are required.
 <DL>
@@ -339,7 +336,7 @@ described in parentheses.
   <DD class=proc-def>The time resulting from subtracting <VAR>time-duration</VAR> to  <VAR>time1</VAR>, which is a time object of the same time type as  <VAR>time1</VAR>. <var>Time1</var> may used to create the resulting time object.
 </DL>
 
-<h2>Date object and accessors</h2>
+<h3>Date object and accessors</h3>
 
 <P>Date objects are immutable once created. The following procedures are required.
 <DL>
@@ -371,7 +368,7 @@ described in parentheses.
   <DD class=proc-def>The ordinal week of the year which holds this date, ignoring a first partial week. 'Day-of-week-starting-week' is the integer corresponding to the day of the week which is to be considered the first day of the week (Sunday=0, Monday=1, etc.).
 </DL>
 
-<H2>Time/Date/Julian Day/Modified Julian Day Converters</h2>
+<h3>Time/Date/Julian Day/Modified Julian Day Converters</h3>
 
 The following conversion procedures are required.
 <DL>
@@ -445,7 +442,7 @@ The following conversion procedures are required.
   <DD class=proc-def>Convert UTC time to TAI time. The time structure may be reused.
 </DL>
 
-<h2>Date to String/String to Date Converters</h2>
+<h3>Date to String/String to Date Converters</h3>
 
 These procedures provide conversion to and from strings. They are required. The specification below describes a 'locale;' the
 specification of locales is beyond this SRFI.
@@ -538,7 +535,7 @@ converters; implementations are free to extend this list.
 <TR><TD COLSPAN="4"><HR WIDTH="100%"></TD></TR>
 </TABLE>
 
-<H1>Implementation</H1>
+<h2>Implementation</h2>
 
 This SRFI cannot be written in completely standard Scheme. In
 particular, there must be some system-independent method of finding
@@ -601,7 +598,7 @@ it might be good to use that code instead.
 
 <p>There is also a <a href="srfi-19-test-suite.scm">test suite</a>.
 
-<h1>Acknowledgements</h1>
+<h2>Acknowledgements</h2>
 
 Claus
 Tøndering's<a href="http://www.tondering.dk/claus/calendar.html"> Frequently Asked Questions</a> about calendars was a very
@@ -622,7 +619,7 @@ GNU C's <code>date</code> procedure, as well as <code>scsh</code>'s
 <code>FORMAT-DATE</code> procedure. 
 
 
-<H1>Copyright</H1>
+<h2>Copyright</h2>
 
 <p>Copyright (C) Neodesic Corporation (2000). All Rights Reserved.</p>
 
