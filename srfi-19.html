@@ -146,7 +146,7 @@
     <li>2019-6-11 (Fixed week number definitions in Table 1.  Note that this was an incompatible change to the API.)</li></ul></li></ul>
 
 <h2>Abstract</h2>
-
+<p>
 Points in time are represented as the number of seconds (with
 nanosecond precision) since "the epoch," a zero point in time. Several
 standard variants are defined, including UTC (universal coordinated
@@ -157,22 +157,25 @@ routines are provided. The procedure CURRENT-TIME queries the current
 time in a specified variant, with a system-dependent
 resolution. Procedures for time arithmetic and time comparisons are
 also provided. 
-
-<p>A date is a representation of a point in time in the Gregorian
+</p>
+<p>
+A date is a representation of a point in time in the Gregorian
 calendar, a 24 hour clock (with nanosecond precision) and a
 time zone offset from UTC. Procedures for 
 converting between time and dates are provided, as well as for reading
 and writing string representations of dates.
+</p>
 
-<h2>Issues</h2>[None currently]
+<h2>Issues</h2>
+<p>[None currently]</p>
 
 
 <h2>Rationale</h2>
-
+<p>
 R5RS Scheme does not provide standard data types for time. This
 SRFI addresses this lack by specifying data types for time and
 associated procedures.
-
+</p>
 
 <h2>Specification</h2>
 
@@ -189,12 +192,12 @@ system. The standard <span id="timesystem">time systems</span> are:
   </li><li>CPU time in current process (implementation dependent),
   </li><li>Time duration.
 </li></ul>
-
+<p>
 Implementations are required to implement UTC, monotonic time, CPU
 time in current process, and time duration. Implementations are
 allowed to create extensions (for example, amount of time spent in
 garbage collection).
-
+</p>
 <p>A <span id="timeobject">time object</span> consists of three components:
 </p>
 <ul>
@@ -213,7 +216,7 @@ garbage collection).
   may have a lower resolution.
 </li></ul>
 
-<p name="dateobject">A <b>Date</b> object, which is distinct from all existing
+<p id="dateobject">A <b>Date</b> object, which is distinct from all existing
 types, represents a point in time as represented by the Gregorian
 calendar as well as by a time zone. Dates are immutable.  A date
 consists of the following components:
@@ -591,9 +594,11 @@ syntax:
                        (lambda formals body ...)))))
 </pre>
 
-<p>Note that it contains TAI-UTC.DAT reader.
-
-</p><p>The <a href="srfi-19.scm">accompanying
+<p>
+Note that it contains TAI-UTC.DAT reader.
+</p>
+<p>
+The <a href="srfi-19.scm">accompanying
 implementation</a> is written in MzScheme.  MzScheme provides the procedure 
 <code>current-seconds</code>, which returns the number of seconds (UTC)
 since 1970-01-01T00:00:00Z+00:00, and
@@ -605,38 +610,46 @@ UTC are resolved through a leap second table. According to the
 International Earth Rotation Service, there will be no leap second in
 December, 2000. Thus, the leap second table is guaranteed to be
 correct through June, 2000. 
-
-</p><p>Also, MzScheme (as of version 102, I believe) provides a method for
+</p>
+<p>
+Also, MzScheme (as of version 102, I believe) provides a method for
 returning the current time zone offset, via its SECONDS-&gt;DATE and
-CURRENT-DATE procedures. 
-
-</p><p>MzScheme's <code>DEFINE-STRUCT</code> was used to define the time
+CURRENT-DATE procedures.
+</p>
+<p>
+MzScheme's <code>DEFINE-STRUCT</code> was used to define the time
 and date objects. <a href="https://srfi.schemers.org/srfi-9/">SRFI 9</a>, Defining Record
 Types, could be used instead.
-
-</p><p>Procedures meant to be used internally have names beginning with
+</p>
+<p>
+Procedures meant to be used internally have names beginning with
 <code>TM:</code>. Locale-related constants and procedures have
 <code>locale</code> in their name; if a 'locale' SRFI is ever written,
 it might be good to use that code instead.
-
-</p><p>From this, the rest of the implementation was built. 
-
-</p><p>There is also a <a href="srfi-19-test-suite.scm">test suite</a>.
+</p>
+<p>
+From this, the rest of the implementation was built.
+</p>
+<p>
+There is also a <a href="srfi-19-test-suite.scm">test suite</a>.
+</p>
 
 <h2>Acknowledgements</h2>
-
+<p>
 Claus
 Tøndering's<a href="http://www.tondering.dk/claus/calendar.html"> Frequently Asked Questions</a> about calendars was a very
 useful resource. The implementation of Julian Day, Modified Julian
 Day, and Year Day comes from his FAQ. Markus Kuhn has a <a href="http://www.cl.cam.ac.uk/~mgk25/iso-time.html">useful
 description</a> of the <a href="http://www.iso.ch/markete/8601.pdf">ISO Standard 8601</a> for
 Date/Time notation; The W3 Consortium also has a <a href="http://www.w3.org/TR/NOTE-datetime">useful Note</a>.
-
-<p>Mike Sperber, Marc Feeley, Dave Mason, and "Prfnoff" all made useful
+</p>
+<p>
+Mike Sperber, Marc Feeley, Dave Mason, and "Prfnoff" all made useful
 comments on previous versions of this draft. Thanks to Shriram 
 Krishnamurthi for his editing help.
-
-</p><p>The <code>DATE-&gt;STRING</code> procedure uses a format string, based on
+</p>
+<p>
+The <code>DATE-&gt;STRING</code> procedure uses a format string, based on
 GNU C's <code>date</code> procedure, as well as <code>scsh</code>'s
 <code>FORMAT-DATE</code> procedure. 
 </p>
