@@ -143,7 +143,8 @@
     <li>2003-05-30 (Fixed documentation bug for <code>~D</code>.)</li>
     <li>2004-03-15 (Fixed various documentation bugs.)</li>
     <li>2017-05-05 (Fixed definition of Julian Day and Modified Julian Day.)</li>
-    <li>2019-6-11 (Fixed week number definitions in Table 1.  Note that this was an incompatible change to the API.)</li></ul></li></ul>
+    <li>2019-06-11 (Fixed week number definitions in Table 1.  Note that this was an incompatible change to the API.)</li>
+    <li>2023-03-29 (Fixed return type of <code><a href="#time-tai-&gt;time-utc">time-tai-&gt;time-utc</a></code> and <code><a href="#time-tai-&gt;time-utc!">time-tai-&gt;time-utc!</a></code>.)</li></ul></li></ul>
 
 <h2>Abstract</h2>
 <p>
@@ -441,9 +442,9 @@ The following conversion procedures are required.
   </dd><dt class="proc-def" id="time-tai-&gt;time-monotonic!"><code class="proc-def">time-tai-&gt;time-monotonic!</code> <var>time-tai</var> -&gt; <var>time-monotonic</var>
   </dt><dd class="proc-def">Convert TAI time to monotonic time. The time structure may be reused.
   </dd><dt class="proc-def" id="time-tai-&gt;time-utc"><code class="proc-def">time-tai-&gt;time-utc</code> <var>time-tai</var> -&gt; <var>time-utc</var>
-  </dt><dd class="proc-def">Convert TAI time to monotonic time.
+  </dt><dd class="proc-def">Convert TAI time to UTC time.
   </dd><dt class="proc-def" id="time-tai-&gt;time-utc!"><code class="proc-def">time-tai-&gt;time-utc!</code> <var>time-tai</var> -&gt; <var>time-utc</var>
-  </dt><dd class="proc-def">Convert TAI time to monotonic time. The time structure may be reused.
+  </dt><dd class="proc-def">Convert TAI time to UTC time. The time structure may be reused.
   </dd><dt class="proc-def" id="time-utc-&gt;date"><code class="proc-def">time-utc-&gt;date</code> <var>time-utc [tz-offset]</var> -&gt; <var>time-utc</var>
   </dt><dd class="proc-def">Convert UTC time to date, using time zone offset, which defaults to the local time zone.
   </dd><dt class="proc-def" id="time-utc-&gt;julian-day"><code class="proc-def">time-utc-&gt;julian-day</code> <var>time-utc</var> -&gt; <var>jd</var>
