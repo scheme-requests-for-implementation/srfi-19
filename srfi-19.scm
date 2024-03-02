@@ -1339,6 +1339,11 @@
 	      (if (eof-object? ch)
 		  (tm:time-error 'string->date 'bad-date-template-string
 				 (list "Invalid time zone number" ch)))
+	      (if (char=? ch #\:)
+		  (set! ch (read-char port))
+		  (if (eof-object? ch)
+		      (time-error 'string->date 'bad-date-template-string
+				  (list "Invalid time zone number" ch))))
 	      (set! offset (+ offset (* (tm:char->int ch)
 					10 60))))
 	    (let ((ch (read-char port)))
