@@ -207,14 +207,17 @@
 
 (define-s19-test! "date->string"
   (lambda ()
-    (let ((d (make-date 0 1 2 3 4 5 2006 0)))
+    (let ((d (make-date 0 1 2 3 4 5 2006 0))
+          (d-zero-o-clock (make-date 0 0 0 0 1 9 2018 0)))
       (and
        (string=? " 3" (date->string d "~k"))
        (string=? " 3" (date->string d "~l"))
        (string=? "2006-05-04T03:02:01" (date->string d "~5"))
        (string=? "2006-05-04T03:02:01Z" (date->string d "~4"))
        (string=? "03:02:01" (date->string d "~3"))
-       (string=? "03:02:01Z" (date->string d "~2"))))
+       (string=? "03:02:01Z" (date->string d "~2"))
+       (string=? "12" (date->string d-zero-o-clock "~I"))
+       (string=? "12" (date->string d-zero-o-clock "~l"))))
     ))
 
 (let ((dates '((2020 12 31 . "53") ; Thursday, week 53
